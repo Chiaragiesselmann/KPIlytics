@@ -1,125 +1,113 @@
-// === dashboard.js ===
-
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   const moduleSelect = document.getElementById("module-select");
   const kpiSelect = document.getElementById("kpi-select");
   const benchmarkToggle = document.getElementById("benchmark-toggle");
-  const userIcon = document.getElementById("user-icon");
-  const settingsIcon = document.getElementById("settings-icon");
-  const logoutMenu = document.getElementById("logout-menu");
-  const settingsMenu = document.getElementById("settings-menu");
   const logoutSwitch = document.getElementById("logout-switch");
 
-  const kpiOptions = {
-    Rezeption: ["ADR", "Umsatz pro Zimmer"],
-    Restaurant: ["Umsatz pro Tisch", "Deckungsbeitrag"],
-    Bar: ["Durchschn. Gästeanzahl", "Wareneinsatzquote"]
-  };
+  const userMenu = document.getElementById("user-menu");
+  const settingsMenu = document.getElementById("settings-menu");
 
-  const chartCtx = document.getElementById("kpiChart").getContext("2d");
-  let kpiChart = null;
+  document.getElementById("user-icon").addEventListener("click", () => {
+    userMenu.classList.toggle("hidden");
+    settingsMenu.classList.add("hidden");
+  });
 
-  function updateKPIOptions() {
-    const selectedModule = moduleSelect.value;
-    const options = kpiOptions[selectedModule] || [];
-    kpiSelect.innerHTML = "";
-    options.forEach(kpi => {
-      const option = document.createElement("option");
-      option.textContent = kpi;
-      kpiSelect.appendChild(option);
-    });
-    updateChart();
-  }
+  document.getElementById("settings-icon").addEventListener("click", () => {
+    settingsMenu.classList.toggle("hidden");
+    userMenu.classList.add("hidden");
+  });
 
-  function getSampleData(kpi) {
-    const samples = {
-      "ADR": [120, 130, 125, 123, 140, 135],
-      "Umsatz pro Zimmer": [200, 190, 210, 205, 215, 220],
-      "Umsatz pro Tisch": [50, 55, 53, 60, 58, 65],
-      "Deckungsbeitrag": [70, 75, 80, 78, 85, 90],
-      "Durchschn. Gästeanzahl": [320, 410, 500, 400, 395, 450],
-      "Wareneinsatzquote": [30, 32, 28, 35, 34, 36]
+  logoutSwitch.addEventListener("change", () => {
+    if (logoutSwitch.checked) {
+      window.location.href = "index.html";
+    }
+  });
+
+  function getChartData(module, kpi, withBenchmark = false) {
+    const labels = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun"];
+    let data, benchmarkData;
+
+    switch (module) {
+      case "Rezeption":
+        data = [120, 130, 125, 123, 140, 135];
+        benchmarkData = [125, 128, 122, 126, 138, 130];
+        break;
+      case "Restaurant":
+        data = [450, 460, 430, 410, 480, 460];
+        benchmarkData = [470, 455, 440, 425, 470, 450];
+        break;
+      case "Bar":
+        data = [320, 400, 500, 420, 410, 450];
+        benchmarkData = [310, 390, 490, 415, 405, 445];
+        break;
+      default:
+        data = [0, 0, 0, 0, 0, 0];
+    }
+
+    return {
+      labels,
+      datasets: [
+        {
+          label: kpi,
+          data: data,
+          borderColor: "#3d1562",
+          backgroundColor: "#3d1562",
+          fill: false,
+          tension: 0.4,
+        },
+        ...(withBenchmark
+          ? [
+              {
+                label: kpi + " Benchmark",
+                data: benchmarkData,
+                borderColor: "#9e77cf",
+                backgroundColor: "#9e77cf",
+                borderDash: [5, 5],
+                fill: false,
+                tension: 0.4,
+              },
+            ]
+          : []),
+      ],
     };
-    return samples[kpi] || [0, 0, 0, 0, 0, 0];
   }
 
-  function getBenchmarkData(kpi) {
-    const variation = getSampleData(kpi).map(val => val * (0.9 + Math.random() * 0.2));
-    return variation;
-  }
+  const ctx = document.getElementById("kpiChart").getContext("2d");
+  let kpiChart = new Chart(ctx, {
+    type: "line",
+    data: getChartData(moduleSelect.value, kpiSelect.value),
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "top",
+        },
+      },
+    },
+  });
 
   function updateChart() {
-    const selectedKPI = kpiSelect.value;
-    const data = getSampleData(selectedKPI);
-    const labels = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun"];
-
-    const datasets = [
-      {
-        label: selectedKPI,
-        data,
-        borderColor: "#3d1562",
-        backgroundColor: "#3d1562",
-        tension: 0.4,
-        fill: false,
-        pointBackgroundColor: "#3d1562"
-      }
-    ];
-
-    if (benchmarkToggle.checked) {
-      datasets.push({
-        label: "Benchmark",
-        data: getBenchmarkData(selectedKPI),
-        borderColor: "#c4b3e0",
-        backgroundColor: "#c4b3e0",
-        tension: 0.4,
-        fill: false,
-        pointBackgroundColor: "#c4b3e0"
-      });
-    }
-
-    if (kpiChart) {
-      kpiChart.data.labels = labels;
-      kpiChart.data.datasets = datasets;
-      kpiChart.update();
-    } else {
-      kpiChart = new Chart(chartCtx, {
-        type: "line",
-        data: {
-          labels,
-          datasets
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: "top"
-            }
-          }
-        }
-      });
-    }
+    const newData = getChartData(moduleSelect.value, kpiSelect.value, benchmarkToggle.checked);
+    kpiChart.data = newData;
+    kpiChart.update();
   }
 
-  function toggleMenu(menuElement) {
-    menuElement.classList.toggle("show");
-  }
-
-  // Event Listeners
-  moduleSelect.addEventListener("change", updateKPIOptions);
+  moduleSelect.addEventListener("change", updateChart);
   kpiSelect.addEventListener("change", updateChart);
   benchmarkToggle.addEventListener("change", updateChart);
-
-  userIcon.addEventListener("click", () => toggleMenu(logoutMenu));
-  settingsIcon.addEventListener("click", () => toggleMenu(settingsMenu));
-
-  if (logoutSwitch) {
-    logoutSwitch.addEventListener("change", () => {
-      if (logoutSwitch.checked) {
-        window.location.href = "index.html";
-      }
-    });
-  }
-
-  // Initial Setup
-  updateKPIOptions();
 });
+
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  sidebar.classList.toggle("hidden");
+}
+
+function toggleUserMenu() {
+  const menu = document.getElementById("user-menu");
+  menu.classList.toggle("hidden");
+}
+
+function toggleSettingsMenu() {
+  const menu = document.getElementById("settings-menu");
+  menu.classList.toggle("hidden");
+}

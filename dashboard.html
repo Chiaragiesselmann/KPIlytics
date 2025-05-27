@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KPIlytics Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
+  <!-- Top Navigation -->
   <header class="top-nav">
     <div class="menu-icon" onclick="toggleSidebar()">
-      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="3" y1="6" x2="21" y2="6"/>
         <line x1="3" y1="12" x2="21" y2="12"/>
         <line x1="3" y1="18" x2="21" y2="18"/>
@@ -19,38 +19,42 @@
     </div>
     <div class="logo">KPIlytics</div>
     <div class="top-right-icons">
-      <svg onclick="toggleSettings()" class="settings-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3" />
+      <svg onclick="toggleSettings()" class="settings-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2" />
       </svg>
       <svg onclick="toggleUserMenu()" class="user-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round"
-              d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501
-               20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12
-               21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
       </svg>
+      <div id="user-menu" class="user-menu hidden">
+        <label class="logout-switch">
+          <span>Logout</span>
+          <input type="checkbox" onclick="logout()">
+          <span class="slider"></span>
+        </label>
+      </div>
     </div>
   </header>
 
+  <!-- Sidebar Menu -->
   <nav id="sidebar" class="sidebar hidden">
     <ul>
-      <li>📁 Datei Upload</li>
-      <li>📊 Detail Ansicht</li>
-      <li>💜 Feedback</li>
+      <li><span class="icon-upload"></span> Datei Upload</li>
+      <li><span class="icon-graph"></span> Detail Ansicht</li>
+      <li><span class="icon-feedback"></span> Feedback</li>
     </ul>
   </nav>
 
+  <!-- Main Content -->
   <main class="main-content">
     <div class="filters">
-      <select id="module-select">
-        <option>Rezeption</option>
-        <option>Restaurant</option>
-        <option>Bar</option>
+      <select id="module-select" onchange="updateKpiOptions()">
+        <option value="rezeption">Rezeption</option>
+        <option value="restaurant">Restaurant</option>
+        <option value="bar">Bar</option>
       </select>
 
       <select id="kpi-select">
-        <option>ADR</option>
-        <option>Umsatz pro Tisch</option>
-        <option>Wareneinsatzquote</option>
+        <!-- dynamisch generierte Optionen -->
       </select>
 
       <label>

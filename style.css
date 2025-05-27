@@ -5,6 +5,7 @@ body {
   color: #3d1562;
 }
 
+/* === Login Styles === */
 .login-container {
   display: flex;
   flex-direction: column;
@@ -82,4 +83,76 @@ footer a {
   text-decoration: none;
 }
 
+/* === Dashboard Styles === */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #e6ddf4;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
+.menu-icon svg,
+.top-right-icons svg {
+  cursor: pointer;
+  stroke: #3d1562;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #dcd0ec;
+  padding: 1rem;
+  position: absolute;
+  top: 64px;
+  left: 0;
+  height: calc(100% - 64px);
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar.hidden {
+  display: none;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 1rem 0;
+  color: #3d1562;
+  cursor: pointer;
+}
+
+.main-content {
+  padding: 2rem;
+  margin-left: 220px;
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+select, label {
+  font-size: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #c4b3e0;
+  border-radius: 5px;
+  background-color: white;
+  color: #3d1562;
+}
+
+canvas {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+}

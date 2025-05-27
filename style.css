@@ -81,3 +81,9 @@ footer a {
   color: #3d1562;
   text-decoration: none;
 }
+
+.user-icon {
+  border: 2px solid red;   /* sichtbar machen */
+  background-color: yellow;
+}
+

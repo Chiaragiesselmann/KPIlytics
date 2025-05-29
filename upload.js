@@ -1,72 +1,74 @@
+// upload.js
 
 document.addEventListener("DOMContentLoaded", function () {
-  const uploadBox = document.getElementById("upload-box");
-  const fileInput = document.getElementById("file-input");
-  const fileList = document.getElementById("file-list");
+  const uploadArea = document.getElementById("upload-area");
+  const fileInput = document.getElementById("fileElem");
+  const fileList = document.getElementById("upload-info");
 
-  uploadBox.addEventListener("click", () => fileInput.click());
+  uploadArea.addEventListener("click", () => fileInput.click());
 
-  uploadBox.addEventListener("dragover", function (e) {
+  uploadArea.addEventListener("dragover", (e) => {
     e.preventDefault();
-    uploadBox.classList.add("drag-over");
+    uploadArea.classList.add("hover");
   });
 
-  uploadBox.addEventListener("dragleave", function () {
-    uploadBox.classList.remove("drag-over");
+  uploadArea.addEventListener("dragleave", () => {
+    uploadArea.classList.remove("hover");
   });
 
-  uploadBox.addEventListener("drop", function (e) {
+  uploadArea.addEventListener("drop", (e) => {
     e.preventDefault();
-    uploadBox.classList.remove("drag-over");
-    handleFiles(e.dataTransfer.files);
+    uploadArea.classList.remove("hover");
+    const files = Array.from(e.dataTransfer.files);
+    handleFiles(files);
   });
 
-  fileInput.addEventListener("change", () => handleFiles(fileInput.files));
+  fileInput.addEventListener("change", () => {
+    const files = Array.from(fileInput.files);
+    handleFiles(files);
+  });
 
   function handleFiles(files) {
-    [...files].forEach((file) => {
-      const li = document.createElement("li");
-      const statusIcon = document.createElement("span");
-      statusIcon.classList.add("status-icon", "processing");
-
-      const name = document.createElement("span");
-      name.textContent = file.name;
-
-      const deleteIcon = document.createElement("span");
-      deleteIcon.classList.add("delete-icon");
-      deleteIcon.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M5 3.25V4H2.75a.75.75 0 000 1.5h.3l.815 8.15A1.5 1.5 0 005.357 15h5.285a1.5 1.5 0 001.493-1.35l.815-8.15h.3a.75.75 0 000-1.5H11v-.75A2.25 2.25 0 008.75 1h-1.5A2.25 2.25 0 005 3.25zM7.25 2.5a.75.75 0 00-.75.75V4h3v-.75a.75.75 0 00-.75-.75h-1.5z"/>
+    fileList.innerHTML = ""; // Reset list
+    files.forEach((file) => {
+      const listItem = document.createElement("li");
+      listItem.innerHTML = `
+        <span>${file.name}</span>
+        <svg class="status-icon processing" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path fill-rule="evenodd" d="M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8Zm7.75-4.25a.75.75 0 0 0-1.5 0V8c0 .414.336.75.75.75h3.25a.75.75 0 0 0 0-1.5h-2.5v-3.5Z" clip-rule="evenodd" />
+        </svg>
+        <svg class="delete-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+          <path fill-rule="evenodd" d="M5 3.25V4H2.75a.75.75 0 0 0 0 1.5h.3l.815 8.15A1.5 1.5 0 0 0 5.357 15h5.285a1.5 1.5 0 0 0 1.493-1.35l.815-8.15h.3a.75.75 0 0 0 0-1.5H11v-.75A2.25 2.25 0 0 0 8.75 1h-1.5A2.25 2.25 0 0 0 5 3.25Zm2.25-.75a.75.75 0 0 0-.75.75V4h3v-.75a.75.75 0 0 0-.75-.75h-1.5Z" clip-rule="evenodd" />
         </svg>
       `;
+      fileList.appendChild(listItem);
 
-      deleteIcon.addEventListener("click", () => li.remove());
-
-      li.appendChild(statusIcon);
-      li.appendChild(name);
-      li.appendChild(deleteIcon);
-      fileList.appendChild(li);
-
+      // Simulate upload processing
       setTimeout(() => {
-        const isValid = file.size < 1 * 1024 * 1024 && /image|pdf/.test(file.type);
+        const statusIcon = listItem.querySelector(".status-icon");
         statusIcon.classList.remove("processing");
-        statusIcon.classList.add(isValid ? "valid" : "error");
-        statusIcon.innerHTML = isValid
-          ? `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z"/></svg>`
-          : `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M3.05 3.05a7 7 0 1 1 9.9 9.9 7 7 0 0 1-9.9-9.9Zm1.627.566 7.707 7.707a5.501 5.501 0 0 0-7.707-7.707Zm6.646 8.768L3.616 4.677a5.501 5.501 0 0 0 7.707 7.707Z"/></svg>`;
-      }, 1000);
+        statusIcon.classList.add("valid");
+        statusIcon.innerHTML = `
+          <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
+        `;
+      }, 1500);
+
+      listItem.querySelector(".delete-icon").addEventListener("click", () => {
+        listItem.remove();
+      });
     });
   }
-
-  document.getElementById("logout-switch")?.addEventListener("change", function () {
-    if (this.checked) {
-      window.location.href = "index.html";
-    }
-  });
 });
-"""
 
-from pathlib import Path
-js_path = Path("/mnt/data/upload_final.js")
-js_path.write_text(js_code)
-js_path.name
+// Menüfunktionen
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("hidden");
+}
+
+function toggleUserMenu() {
+  document.getElementById("user-menu").classList.toggle("hidden");
+}
+
+function toggleSettings() {
+  document.getElementById("settings-menu").classList.toggle("hidden");
+}

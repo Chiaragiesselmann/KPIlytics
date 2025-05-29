@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KPIlytics Upload</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -10,58 +10,27 @@
   <header>
     <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
     <div class="logo">KPIlytics</div>
-    <div class="top-icons">
-      <svg onclick="toggleSettings()" class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
-        <path fill-rule="evenodd" d="M6.455 1.45A.5.5 0 0 1 6.952 1h2.096a.5.5 0 0 1 .497.45l.186 1.858a4.996 4.996 0 0 1 1.466.848l1.703-.769a.5.5 0 0 1 .639.206l1.047 1.814a.5.5 0 0 1-.14.656l-1.517 1.09a5.026 5.026 0 0 1 0 1.694l1.516 1.09a.5.5 0 0 1 .141.656l-1.047 1.814a.5.5 0 0 1-.639.206l-1.703-.768c-.433.36-.928.649-1.466.847l-.186 1.858a.5.5 0 0 1-.497.45H6.952a.5.5 0 0 1-.497-.45l-.186-1.858a4.993 4.993 0 0 1-1.466-.848l-1.703.769a.5.5 0 0 1-.639-.206l-1.047-1.814a.5.5 0 0 1 .14-.656l1.517-1.09a5.033 5.033 0 0 1 0-1.694l-1.516-1.09a.5.5 0 0 1-.141-.656L2.46 3.593a.5.5 0 0 1 .639-.206l1.703.769c.433-.36.928-.65 1.466-.848l.186-1.858Zm-.177 7.567-.022-.037a2 2 0 0 1 3.466-1.997l.022.037a2 2 0 0 1-3.466 1.997Z" clip-rule="evenodd" />
-      </svg>
-      <svg onclick="toggleUserMenu()" class="user-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
-        <path d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM4 8a4 4 0 1 1 8 0v.5a.5.5 0 0 0 .5.5h.25A1.75 1.75 0 0 1 14.5 10.75v2A2.25 2.25 0 0 1 12.25 15h-8.5A2.25 2.25 0 0 1 1.5 12.75v-2A1.75 1.75 0 0 1 3.25 9.5H3.5a.5.5 0 0 0 .5-.5V8Z"/>
-      </svg>
+    <div class="top-right-icons">
+      <svg onclick="toggleSettings()" class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M6.455 1.45A.5.5 0 0 1 6.952 1h2.096a.5.5 0 0 1 .497.45l.186 1.858a4.996 4.996 0 0 1 1.466.848l1.703-.769a.5.5 0 0 1 .639.206l1.047 1.814a.5.5 0 0 1-.14.656l-1.517 1.09a5.026 5.026 0 0 1 0 1.694l1.516 1.09a.5.5 0 0 1 .141.656l-1.047 1.814a.5.5 0 0 1-.639.206l-1.703-.768a4.993 4.993 0 0 1-1.466.847l-.186 1.858a.5.5 0 0 1-.497.45H6.952a.5.5 0 0 1-.497-.45l-.186-1.858a4.993 4.993 0 0 1-1.466-.848l-1.703.769a.5.5 0 0 1-.639-.206l-1.047-1.814a.5.5 0 0 1 .14-.656l1.517-1.09a5.033 5.033 0 0 1 0-1.694l-1.516-1.09a.5.5 0 0 1-.141-.656L2.46 3.593a.5.5 0 0 1 .639-.206l1.703.769a4.996 4.996 0 0 1 1.466-.848l.186-1.858Zm-.177 7.567-.022-.037a2 2 0 0 1 3.466-1.997l.022.037a2 2 0 0 1-3.466 1.997Z" clip-rule="evenodd"/></svg>
+      <svg onclick="toggleUserMenu()" class="user-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0ZM4 10a3 3 0 0 1 3-3h2a3 3 0 0 1 3 3v1H4v-1Z"/></svg>
+    </div>
+    <div id="settings-menu" class="menu hidden">
+      <a href="#">Einstellungen</a><br />
+      <a href="#">Benutzer verwalten</a>
+    </div>
+    <div id="user-menu" class="menu hidden">
+      <label><input type="checkbox" id="logout-switch" /> Ausloggen</label>
     </div>
   </header>
 
-  <!-- Sidebar -->
-  <div class="sidebar hidden" id="sidebar">
-    <ul>
-      <li onclick="location.href='upload.html'">
-        <span>📤</span> Datei Upload
-      </li>
-      <li onclick="location.href='dashboard.html'">
-        <span>📊</span> Dashboard
-      </li>
-      <li onclick="location.href='#'">
-        <span>💬</span> Detailansicht
-      </li>
-    </ul>
-  </div>
-
-  <!-- Settings menu -->
-  <div id="settings-menu" class="menu hidden">
-    <p><a href="#">Einstellungen</a></p>
-    <p><a href="#">Benutzer verwalten</a></p>
-  </div>
-
-  <!-- User menu -->
-  <div id="user-menu" class="menu hidden">
-    <label>
-      Ausloggen
-      <input type="checkbox" id="logout-switch" class="switch">
-    </label>
-  </div>
-
-  <!-- Upload Section -->
   <main class="main-content">
-    <div class="upload-area" id="upload-area">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 3l-4 4h3v4h2V7h3l-4-4z"/>
-        <path d="M4 14v7h16v-7h-2v5H6v-5H4z"/>
-      </svg>
+    <div class="upload-area" id="uploadArea">
       <p><strong>Datei hier ablegen</strong> oder auswählen</p>
       <p>Zulässig: JPG, PNG, PDF – max. 1 MB</p>
-      <input type="file" id="fileInput" hidden multiple />
+      <input type="file" id="fileInput" hidden />
       <button onclick="document.getElementById('fileInput').click()">Datei auswählen</button>
     </div>
-    <ul class="upload-info" id="upload-info"></ul>
+    <ul class="upload-info" id="fileList"></ul>
   </main>
 
   <footer>
@@ -70,6 +39,6 @@
     <a href="#">Kontakt</a>
   </footer>
 
-  <script src="upload.js"></script>
+  <script src="upload.js" defer></script>
 </body>
 </html>

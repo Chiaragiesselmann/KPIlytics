@@ -1,13 +1,12 @@
-/* Allgemeines Layout */
+/* Gemeinsamer Stil */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background-color: #f4f1fa;
   color: #3d1562;
-}
-
-.hidden {
-  display: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Header */
@@ -18,59 +17,43 @@ header {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
 }
 
-.logo {
-  font-size: 1.8rem;
+header .logo {
+  font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
   flex: 1;
-  color: #3d1562;
 }
 
-.top-right-icons {
+.top-icons {
   display: flex;
   gap: 1rem;
-  align-items: center;
 }
 
-.top-right-icons svg {
+.top-icons svg {
   width: 24px;
   height: 24px;
-  cursor: pointer;
   fill: #3d1562;
-}
-
-/* Menü Dropdowns */
-.menu {
-  position: absolute;
-  top: 60px;
-  right: 10px;
-  background-color: #f4f1fa;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  padding: 1rem;
-  border-radius: 8px;
-  z-index: 100;
+  cursor: pointer;
 }
 
 /* Sidebar */
 .sidebar {
   position: fixed;
-  top: 70px;
+  top: 60px;
   left: 0;
   background-color: #f4f1fa;
   width: 220px;
   height: 100%;
   padding: 1rem;
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-  z-index: 50;
+  z-index: 100;
 }
 
 .sidebar ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .sidebar li {
@@ -88,7 +71,7 @@ header {
   fill: #3d1562;
 }
 
-/* LOGIN */
+/* Login */
 .login-container {
   display: flex;
   flex-direction: column;
@@ -146,7 +129,7 @@ header {
   text-decoration: none;
 }
 
-/* Dashboard Filter */
+/* Dashboard Filterbereich */
 .filters {
   padding: 1rem;
   display: flex;
@@ -168,7 +151,7 @@ label {
   gap: 0.5rem;
 }
 
-/* Diagramm */
+/* Dashboard Diagramm */
 .chart-container {
   max-width: 90%;
   margin: 0 auto 2rem auto;
@@ -179,14 +162,22 @@ label {
   height: 400px;
 }
 
-/* Upload Page */
-.main-content {
-  margin: 2rem auto;
-  max-width: 600px;
+/* Upload-Bereich */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.upload-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .upload-area {
@@ -197,7 +188,6 @@ label {
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  position: relative;
 }
 
 .upload-area:hover {
@@ -208,21 +198,10 @@ label {
   width: 40px;
   height: 40px;
   fill: #3d1562;
-  margin-bottom: 1rem;
-}
-
-.upload-area p {
-  margin: 0.5rem 0;
-  font-size: 0.9rem;
 }
 
 .upload-info {
-  margin-top: 2rem;
-}
-
-.upload-info ul {
-  list-style: none;
-  padding: 0;
+  margin-top: 1.5rem;
 }
 
 .upload-info li {
@@ -231,10 +210,9 @@ label {
   gap: 0.75rem;
   padding: 0.5rem 0;
   border-bottom: 1px solid #ddd;
-  font-size: 0.95rem;
 }
 
-.upload-info .icon {
+.status-icon {
   width: 20px;
   height: 20px;
   fill: #3d1562;
@@ -264,7 +242,7 @@ footer {
   padding: 1rem;
   font-size: 0.85rem;
   background-color: #e6ddf4;
-  margin-top: 2rem;
+  margin-top: auto;
 }
 
 footer a {

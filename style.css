@@ -1,77 +1,19 @@
-/* Gemeinsamer Stil */
+/* === Grundlegendes Layout-Fix für Footer === */
 body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   font-family: Arial, sans-serif;
   background-color: #f4f1fa;
   color: #3d1562;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 
-/* Header */
-header {
-  background-color: #e6ddf4;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-header .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-align: center;
+main {
   flex: 1;
 }
 
-.top-icons {
-  display: flex;
-  gap: 1rem;
-}
-
-.top-icons svg {
-  width: 24px;
-  height: 24px;
-  fill: #3d1562;
-  cursor: pointer;
-}
-
-/* Sidebar */
-.sidebar {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  background-color: #f4f1fa;
-  width: 220px;
-  height: 100%;
-  padding: 1rem;
-  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-  z-index: 100;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar li {
-  margin: 1rem 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  color: #3d1562;
-}
-
-.sidebar li svg {
-  width: 20px;
-  height: 20px;
-  fill: #3d1562;
-}
-
-/* Login */
+/* === LOGIN SEITE === */
 .login-container {
   display: flex;
   flex-direction: column;
@@ -129,7 +71,81 @@ header .logo {
   text-decoration: none;
 }
 
-/* Dashboard Filterbereich */
+/* === DASHBOARD SEITE === */
+header {
+  background-color: #e6ddf4;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  flex: 1;
+  color: #3d1562;
+}
+
+.menu-toggle,
+.settings-icon,
+.user-icon {
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  fill: #3d1562;
+}
+
+.menu {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  background-color: #f4f1fa;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.hidden {
+  display: none;
+}
+
+.sidebar {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 220px;
+  background-color: #f4f1fa;
+  padding: 1rem;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #3d1562;
+  font-weight: 500;
+}
+
+.sidebar li svg {
+  width: 18px;
+  height: 18px;
+  fill: #3d1562;
+}
+
+/* === Filterbereich === */
 .filters {
   padding: 1rem;
   display: flex;
@@ -151,7 +167,7 @@ label {
   gap: 0.5rem;
 }
 
-/* Dashboard Diagramm */
+/* === Chart === */
 .chart-container {
   max-width: 90%;
   margin: 0 auto 2rem auto;
@@ -162,24 +178,7 @@ label {
   height: 400px;
 }
 
-/* Upload-Bereich */
-main {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-}
-
-.upload-wrapper {
-  background: #fff;
-  border-radius: 12px;
-  padding: 2rem;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
+/* === Upload-Bereich === */
 .upload-area {
   border: 2px dashed #c4b3e0;
   background-color: #f4f1fa;
@@ -188,6 +187,9 @@ main {
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin: 2rem auto;
+  width: 80%;
+  max-width: 600px;
 }
 
 .upload-area:hover {
@@ -198,10 +200,17 @@ main {
   width: 40px;
   height: 40px;
   fill: #3d1562;
+  margin-bottom: 1rem;
 }
 
+/* === Upload Info Liste === */
 .upload-info {
   margin-top: 1.5rem;
+  text-align: left;
+  width: 80%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .upload-info li {
@@ -212,31 +221,31 @@ main {
   border-bottom: 1px solid #ddd;
 }
 
-.status-icon {
+.upload-info .icon {
   width: 20px;
   height: 20px;
   fill: #3d1562;
 }
 
-.status-icon.valid {
+.upload-info .status-icon.valid {
   fill: #6a1b9a;
 }
 
-.status-icon.error {
+.upload-info .status-icon.error {
   fill: #c62828;
 }
 
-.status-icon.processing {
+.upload-info .status-icon.processing {
   fill: #9575cd;
 }
 
-.delete-icon {
+.upload-info .delete-icon {
   margin-left: auto;
   cursor: pointer;
   fill: #3d1562;
 }
 
-/* Footer */
+/* === Footer === */
 footer {
   text-align: center;
   padding: 1rem;

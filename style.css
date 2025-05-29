@@ -17,7 +17,6 @@ header {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
 }
 
 .menu-toggle {
@@ -46,10 +45,9 @@ header {
   width: 24px;
   height: 24px;
   cursor: pointer;
-  fill: #3d1562;
+  color: #3d1562;
 }
 
-/* USER- UND EINSTELLUNGSMENÜ */
 .menu {
   position: absolute;
   top: 60px;
@@ -58,7 +56,7 @@ header {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   padding: 1rem;
   border-radius: 8px;
-  z-index: 100;
+  z-index: 10;
 }
 
 .hidden {
@@ -67,14 +65,14 @@ header {
 
 /* SIDEBAR */
 .sidebar {
-  position: fixed;
-  top: 70px;
-  left: 0;
+  width: 250px;
   background-color: #f4f1fa;
-  width: 220px;
-  height: calc(100% - 70px);
+  position: absolute;
+  top: 70px;
+  left: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   padding: 1rem;
-  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   z-index: 10;
 }
 
@@ -85,23 +83,20 @@ header {
 }
 
 .sidebar li {
-  margin: 1rem 0;
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
   color: #3d1562;
+  font-weight: 500;
 }
 
 .sidebar li svg {
-  width: 20px;
-  height: 20px;
+  margin-right: 0.5rem;
   fill: #3d1562;
 }
 
-/* LOGIN-SEITE */
+/* LOGIN */
 .login-container {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -126,23 +121,24 @@ header {
   width: 300px;
 }
 
-.login-box input,
-.login-box button {
+.login-box input {
   width: 100%;
   padding: 0.75rem;
   margin: 0.5rem 0;
+  border: 1px solid #c4b3e0;
   border-radius: 5px;
   font-size: 1rem;
-}
-
-.login-box input {
-  border: 1px solid #c4b3e0;
 }
 
 .login-box button {
   background-color: #3d1562;
   color: white;
+  padding: 0.75rem;
+  width: 100%;
   border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 1rem;
   cursor: pointer;
 }
 
@@ -157,7 +153,7 @@ header {
   text-decoration: none;
 }
 
-/* DASHBOARD INHALT */
+/* FILTER & CHART */
 .filters {
   padding: 1rem;
   display: flex;
@@ -179,9 +175,10 @@ label {
   gap: 0.5rem;
 }
 
-/* CHART CONTAINER */
-.chart-container {
-  max-width: 90%;
+.chart-container,
+.main-content {
+  max-width: 100%;
+  width: 95%;
   margin: 0 auto 2rem auto;
   padding: 1rem;
   background: white;
@@ -190,17 +187,7 @@ label {
   height: 400px;
 }
 
-/* UPLOAD-SEITE */
-.main-content {
-  flex: 1;
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
+/* UPLOAD-BEREICH */
 .upload-area {
   border: 2px dashed #c4b3e0;
   background-color: #f4f1fa;
@@ -209,38 +196,23 @@ label {
   text-align: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  position: relative;
 }
 
 .upload-area:hover {
   background-color: #e6ddf4;
 }
 
-.upload-area p {
-  margin: 0.5rem 0;
-}
-
-.upload-area button {
-  margin-top: 1rem;
-  background-color: #3d1562;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 .upload-area svg {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   fill: #3d1562;
-  margin-bottom: 0.5rem;
 }
 
 .upload-info {
-  margin-top: 2rem;
-  padding: 0;
+  margin-top: 1.5rem;
+  text-align: left;
   list-style: none;
+  padding: 0;
 }
 
 .upload-info li {
@@ -265,6 +237,10 @@ label {
   fill: #c62828;
 }
 
+.upload-info .status-icon.processing {
+  fill: #9575cd;
+}
+
 .upload-info .delete-icon {
   margin-left: auto;
   cursor: pointer;
@@ -284,4 +260,12 @@ footer a {
   margin: 0 10px;
   color: #3d1562;
   text-decoration: none;
+}
+
+/* RESPONSIVE */
+@media (min-width: 1400px) {
+  .chart-container,
+  .main-content {
+    width: 80%;
+  }
 }

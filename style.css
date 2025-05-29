@@ -1,45 +1,189 @@
-/* =================== Korrigierter Header-Stil =================== */
+/* =================== Allgemeine Basis-Stile =================== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f1fa;
+  color: #3d1562;
+}
+
+h1, h2, h3, h4, h5 {
+  margin: 0;
+}
+
+/* =================== Login Seite =================== */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.login-box {
+  background-color: #e6ddf4;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+}
+
+.user-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1rem;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border: 1px solid #c4b3e0;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+button {
+  background-color: #3d1562;
+  color: white;
+  padding: 0.75rem;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #4d1b7c;
+}
+
+.forgot-password {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #3d1562;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* =================== Dashboard Topbar =================== */
 header.top-nav {
   background-color: #e6ddf4;
   padding: 1rem 2rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   position: relative;
 }
 
-.top-nav .menu-icon {
-  display: flex;
-  align-items: center;
+.menu-icon svg {
+  width: 24px;
+  height: 24px;
   cursor: pointer;
+  color: #3d1562;
 }
 
-.top-nav .logo {
-  flex-grow: 1;
-  text-align: center;
+.logo {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-left: -40px; /* für visuelle Zentrierung */
+  text-align: center;
+  flex-grow: 1;
 }
 
 .top-right-icons {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   align-items: center;
+  position: relative;
 }
 
-/* =================== Icons =================== */
 .settings-icon,
 #user-icon {
   width: 24px;
   height: 24px;
   cursor: pointer;
+  color: #3d1562;
+}
+
+/* =================== Sidebar =================== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 220px;
+  background-color: #f4f1fa;
+  padding-top: 60px;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px 20px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: #3d1562;
+}
+
+.sidebar svg {
+  width: 16px;
+  height: 16px;
+  color: #3d1562;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* =================== Filter und Diagrammbereich =================== */
+.main-content {
+  padding: 2rem;
+  margin-left: 220px;
+  transition: margin 0.3s ease;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.filters select,
+.filters label {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #c4b3e0;
+  background-color: white;
+}
+
+canvas {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 /* =================== Popup-Menüs =================== */
 .user-menu,
 .settings-menu {
   position: absolute;
+  right: 1rem;
+  top: 3.5rem;
   background-color: #f4f1fa;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -47,16 +191,6 @@ header.top-nav {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   z-index: 10;
   width: 180px;
-}
-
-.user-menu {
-  top: 60px;
-  right: 1.5rem;
-}
-
-.settings-menu {
-  top: 60px;
-  right: 4.5rem;
 }
 
 .user-menu label,
@@ -71,4 +205,25 @@ header.top-nav {
 
 .user-menu input[type="checkbox"] {
   margin-left: 10px;
+}
+
+/* =================== Footer =================== */
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  background-color: #e6ddf4;
+  width: 100%;
+  position: relative;
+  margin-top: 2rem;
+}
+
+footer a {
+  margin: 0 10px;
+  color: #3d1562;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
 }

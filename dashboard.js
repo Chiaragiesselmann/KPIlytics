@@ -1,129 +1,137 @@
-document.addEventListener("DOMContentLoaded", function () {
+// dashboard.js
+
+// Toggle Sidebar
+function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
-  const settingsMenu = document.getElementById("settings-menu");
+  sidebar.classList.toggle("hidden");
+}
+
+// Toggle User Menu
+function toggleUserMenu() {
   const userMenu = document.getElementById("user-menu");
+  userMenu.classList.toggle("hidden");
+}
+
+// Toggle Settings Menu
+function toggleSettings() {
+  const settingsMenu = document.getElementById("settings-menu");
+  settingsMenu.classList.toggle("hidden");
+}
+
+// Handle Logout
+document.addEventListener("DOMContentLoaded", () => {
   const logoutSwitch = document.getElementById("logout-switch");
-  const userIcon = document.getElementById("user-icon");
-  const settingsIcon = document.getElementById("settings-icon");
-
-  document.getElementById("menu-toggle").addEventListener("click", () => {
-    sidebar.classList.toggle("hidden");
-  });
-
-  if (userIcon) {
-    userIcon.addEventListener("click", () => {
-      userMenu.classList.toggle("hidden");
-      settingsMenu.classList.add("hidden");
-    });
-  }
-
-  if (settingsIcon) {
-    settingsIcon.addEventListener("click", () => {
-      settingsMenu.classList.toggle("hidden");
-      userMenu.classList.add("hidden");
-    });
-  }
-
   if (logoutSwitch) {
     logoutSwitch.addEventListener("change", () => {
       if (logoutSwitch.checked) {
-        window.location.href = "index.html";
+        window.location.href = "index.html"; // Back to login page
       }
     });
   }
+});
 
-  const moduleSelect = document.getElementById("module-select");
-  const kpiSelect = document.getElementById("kpi-select");
-  const benchmarkToggle = document.getElementById("benchmark-toggle");
-  const ctx = document.getElementById("kpiChart").getContext("2d");
-
-  const kpiOptions = {
-    Rezeption: ["ADR"],
-    Restaurant: ["Umsatz pro Tisch", "Wareneinsatzquote"],
-    Bar: ["Deckungsbeitrag", "Durchschn. Gästeanzahl"],
-  };
-
-  const kpiData = {
-    "ADR": [120, 130, 125, 140, 135, 132],
-    "Umsatz pro Tisch": [80, 85, 90, 100, 105, 110],
+// KPI Datenstruktur
+const kpiData = {
+  Rezeption: {
+    ADR: [120, 130, 125, 140, 150, 145],
+    benchmark: [118, 128, 123, 138, 148, 143]
+  },
+  Restaurant: {
+    "Umsatz pro Tisch": [300, 400, 350, 500, 450, 470],
     "Wareneinsatzquote": [30, 32, 31, 33, 34, 35],
-    "Deckungsbeitrag": [60, 65, 63, 68, 70, 72],
-    "Durchschn. Gästeanzahl": [300, 350, 400, 380, 420, 450]
-  };
+    benchmark: [280, 390, 340, 480, 430, 445]
+  },
+  Bar: {
+    Deckungsbeitrag: [50, 60, 55, 70, 75, 80],
+    "Durchschn. Gästeanzahl": [200, 250, 230, 300, 280, 290],
+    benchmark: [48, 58, 53, 68, 73, 78]
+  }
+};
 
-  const benchmarkData = {
-    "ADR": [118, 128, 123, 138, 133, 130],
-    "Umsatz pro Tisch": [75, 80, 85, 95, 100, 105],
-    "Wareneinsatzquote": [28, 31, 30, 32, 33, 34],
-    "Deckungsbeitrag": [58, 63, 61, 66, 68, 70],
-    "Durchschn. Gästeanzahl": [290, 340, 390, 370, 410, 440]
-  };
+const moduleSelect = document.getElementById("module-select");
+const kpiSelect = document.getElementById("kpi-select");
+const benchmarkToggle = document.getElementById("benchmark-toggle");
+const chartCanvas = document.getElementById("kpiChart");
 
-  const labels = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun"];
+let chart;
 
-  let chart = new Chart(ctx, {
+function populateModules() {
+  const modules = Object.keys(kpiData);
+  modules.forEach(module => {
+    const option = document.createElement("option");
+    option.value = module;
+    option.textContent = module;
+    moduleSelect.appendChild(option);
+  });
+}
+
+function updateKPIs() {
+  const selectedModule = moduleSelect.value;
+  kpiSelect.innerHTML = "";
+
+  const moduleKPIs = Object.keys(kpiData[selectedModule]).filter(kpi => kpi !== "benchmark");
+  moduleKPIs.forEach(kpi => {
+    const option = document.createElement("option");
+    option.value = kpi;
+    option.textContent = kpi;
+    kpiSelect.appendChild(option);
+  });
+  updateChart();
+}
+
+function updateChart() {
+  const module = moduleSelect.value;
+  const kpi = kpiSelect.value;
+  const data = kpiData[module][kpi];
+  const benchmark = benchmarkToggle.checked ? kpiData[module].benchmark : null;
+
+  const config = {
     type: "line",
     data: {
-      labels,
-      datasets: []
+      labels: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun"],
+      datasets: [
+        {
+          label: kpi,
+          data,
+          borderColor: "#3d1562",
+          backgroundColor: "#3d1562",
+          fill: false,
+          tension: 0.4,
+          pointRadius: 4,
+          pointBackgroundColor: "#3d1562"
+        },
+        benchmark && {
+          label: `${kpi} Benchmark`,
+          data: benchmark,
+          borderColor: "#a86adf",
+          backgroundColor: "#a86adf",
+          borderDash: [5, 5],
+          fill: false,
+          tension: 0.4,
+          pointRadius: 4,
+          pointBackgroundColor: "#a86adf"
+        }
+      ].filter(Boolean)
     },
     options: {
       responsive: true,
-      plugins: {
-        legend: { position: 'top' }
-      }
+      maintainAspectRatio: false
     }
-  });
+  };
 
-  function updateKPIOptions() {
-    const selectedModule = moduleSelect.value;
-    const options = kpiOptions[selectedModule];
-    kpiSelect.innerHTML = "";
-    options.forEach(opt => {
-      const option = document.createElement("option");
-      option.value = opt;
-      option.textContent = opt;
-      kpiSelect.appendChild(option);
-    });
-    updateChart();
+  if (chart) {
+    chart.destroy();
   }
 
-  function updateChart() {
-    const selectedKPI = kpiSelect.value;
-    const showBenchmark = benchmarkToggle.checked;
+  chart = new Chart(chartCanvas, config);
+}
 
-    const datasets = [
-      {
-        label: selectedKPI,
-        data: kpiData[selectedKPI],
-        borderColor: "#3d1562",
-        backgroundColor: "#3d1562",
-        tension: 0.3,
-        fill: false,
-        pointRadius: 4
-      }
-    ];
+populateModules();
+moduleSelect.addEventListener("change", updateKPIs);
+kpiSelect.addEventListener("change", updateChart);
+benchmarkToggle.addEventListener("change", updateChart);
 
-    if (showBenchmark && benchmarkData[selectedKPI]) {
-      datasets.push({
-        label: `${selectedKPI} Benchmark`,
-        data: benchmarkData[selectedKPI],
-        borderColor: "#a678dd",
-        backgroundColor: "#a678dd",
-        borderDash: [5, 5],
-        tension: 0.3,
-        fill: false,
-        pointRadius: 4
-      });
-    }
-
-    chart.data.datasets = datasets;
-    chart.update();
-  }
-
-  moduleSelect.addEventListener("change", updateKPIOptions);
-  kpiSelect.addEventListener("change", updateChart);
-  benchmarkToggle.addEventListener("change", updateChart);
-
-  updateKPIOptions();
+// Init
+document.addEventListener("DOMContentLoaded", () => {
+  updateKPIs();
 });

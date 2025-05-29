@@ -1,4 +1,4 @@
-/* Allgemeine Basis-Stile */
+/* =================== Allgemeine Basis-Stile =================== */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -6,19 +6,17 @@ body {
   color: #3d1562;
 }
 
-/* =================== LOGIN SEITE =================== */
+h1, h2, h3, h4, h5 {
+  margin: 0;
+}
+
+/* =================== Login Seite =================== */
 .login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-}
-
-.title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
 }
 
 .login-box {
@@ -73,7 +71,130 @@ button:hover {
   text-decoration: underline;
 }
 
-/* =================== FOOTER =================== */
+/* =================== Dashboard Topbar =================== */
+header.top-nav {
+  background-color: #e6ddf4;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
+.top-right-icons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.settings-icon,
+#user-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+/* =================== Sidebar =================== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 220px;
+  background-color: #f4f1fa;
+  padding-top: 60px;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px 20px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar svg {
+  width: 16px;
+  height: 16px;
+  color: #3d1562;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* =================== Filter und Diagrammbereich =================== */
+.main-content {
+  padding: 2rem;
+  margin-left: 220px;
+  transition: margin 0.3s ease;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.filters select,
+.filters label {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #c4b3e0;
+  background-color: white;
+}
+
+canvas {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* =================== Popup-Menüs =================== */
+.user-menu,
+.settings-menu {
+  position: absolute;
+  right: 1.5rem;
+  top: 4rem;
+  background-color: #f4f1fa;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  width: 180px;
+}
+
+.user-menu label,
+.settings-menu a {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: #3d1562;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.user-menu input[type="checkbox"] {
+  margin-left: 10px;
+}
+
+/* =================== Footer =================== */
 footer {
   text-align: center;
   padding: 1rem;
@@ -81,6 +202,7 @@ footer {
   background-color: #e6ddf4;
   width: 100%;
   position: relative;
+  margin-top: 2rem;
 }
 
 footer a {

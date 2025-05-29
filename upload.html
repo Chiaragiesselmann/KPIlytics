@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload - KPIlytics</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="top-nav">
+    <div id="menu-toggle" onclick="toggleSidebar()">☰</div>
+    <div class="logo">KPIlytics</div>
+    <div class="top-right-icons">
+      <!-- Settings Icon -->
+      <svg onclick="toggleSettings()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#3d1562" class="icon">
+        <path fill-rule="evenodd" d="M6.455 1.45A.5.5...Z" clip-rule="evenodd" />
+      </svg>
+      <!-- User Icon -->
+      <svg onclick="toggleUserMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#3d1562" class="icon">
+        <path fill-rule="evenodd" d="M15 8A7 7...Z" clip-rule="evenodd" />
+      </svg>
+    </div>
+
+    <!-- Settings Dropdown -->
+    <div id="settings-menu" class="dropdown hidden">
+      <a href="#">Einstellungen</a>
+      <a href="#">Benutzer verwalten</a>
+    </div>
+
+    <!-- User Dropdown -->
+    <div id="user-menu" class="dropdown hidden">
+      <label class="logout-switch">
+        Ausloggen
+        <input type="checkbox" id="logout-switch" />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <nav id="sidebar" class="sidebar hidden">
+    <ul>
+      <li>
+        <svg viewBox="0 0 16 16" fill="#3d1562" class="icon">
+          <path d="M7.25 10.25a.75.75..." />
+          <path d="M3.5 9.75a.75.75..." />
+        </svg>
+        Datei Upload
+      </li>
+      <li>
+        <svg viewBox="0 0 16 16" fill="#3d1562" class="icon">
+          <path d="M6 7.5a1.5 1.5..." />
+          <path d="..." />
+        </svg>
+        Detailansicht
+      </li>
+      <li>
+        <svg viewBox="0 0 16 16" fill="#3d1562" class="icon">
+          <path d="M2 6.342a3.375..." />
+        </svg>
+        Feedback
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="upload-container">
+      <div class="dropzone" id="dropzone">
+        <svg viewBox="0 0 16 16" fill="#3d1562" class="dropzone-icon">
+          <path d="M7.25 1.75a.75.75...Z" />
+        </svg>
+        <p><label for="file-upload" class="click-upload">Datei auswählen</label> oder hierher ziehen</p>
+        <p class="hint">Zulässig: JPG, PNG, PDF – max. 1 MB</p>
+        <input type="file" id="file-upload" class="hidden-input" />
+      </div>
+
+      <!-- Uploaded File List -->
+      <div id="file-list" class="file-list hidden">
+        <!-- Dynamisch durch JS -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <a href="#">Impressum</a>
+    <a href="#">AGB</a>
+    <a href="#">Kontakt</a>
+  </footer>
+
+  <!-- Upload Icons Templates (hidden) -->
+  <template id="icon-valid">
+    <svg viewBox="0 0 16 16" fill="#3d1562" class="icon">
+      <path fill-rule="evenodd" d="M12.416 3.376a.75.75..." clip-rule="evenodd"/>
+    </svg>
+  </template>
+  <template id="icon-error">
+    <svg viewBox="0 0 16 16" fill="#3d1562" class="icon">
+      <path fill-rule="evenodd" d="M3.05 3.05a7 7..." clip-rule="evenodd"/>
+    </svg>
+  </template>
+  <template id="icon-process">
+    <svg viewBox="0 0 16 16" fill="#3d1562" class="icon">
+      <path fill-rule="evenodd" d="M1 8a7 7..." clip-rule="evenodd"/>
+    </svg>
+  </template>
+  <template id="icon-delete">
+    <svg viewBox="0 0 16 16" fill="#3d1562" class="icon clickable">
+      <path fill-rule="evenodd" d="M5 3.25V4H2.75..." clip-rule="evenodd"/>
+    </svg>
+  </template>
+
+  <script src="upload.js"></script>
+</body>
+</html>

@@ -6,8 +6,9 @@ body {
   color: #3d1562;
 }
 
-h1, h2, h3, h4, h5 {
+h1 {
   margin: 0;
+  text-align: center;
 }
 
 /* =================== Login Seite =================== */
@@ -71,20 +72,24 @@ button:hover {
   text-decoration: underline;
 }
 
-/* =================== Dashboard Topbar =================== */
+/* =================== Dashboard Header =================== */
 header.top-nav {
   background-color: #e6ddf4;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
+}
+
+.menu-icon {
+  cursor: pointer;
 }
 
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  margin: 0 auto;
+  flex-grow: 1;
+  text-align: center;
 }
 
 .top-right-icons {
@@ -110,6 +115,7 @@ header.top-nav {
   background-color: #f4f1fa;
   padding-top: 60px;
   box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
 
 .sidebar ul {
@@ -138,7 +144,7 @@ header.top-nav {
 /* =================== Filter und Diagrammbereich =================== */
 .main-content {
   padding: 2rem;
-  margin-left: 220px;
+  margin-left: 0; /* dynamically pushed by sidebar toggle if needed */
   transition: margin 0.3s ease;
 }
 
@@ -163,21 +169,26 @@ canvas {
   border-radius: 10px;
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  max-width: 100%;
 }
 
 /* =================== Popup-Menüs =================== */
 .user-menu,
 .settings-menu {
   position: absolute;
-  right: 1.5rem;
-  top: 4rem;
+  top: 60px;
+  right: 2rem;
   background-color: #f4f1fa;
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 10;
+  z-index: 20;
   width: 180px;
+}
+
+.settings-menu {
+  right: 4rem;
 }
 
 .user-menu label,

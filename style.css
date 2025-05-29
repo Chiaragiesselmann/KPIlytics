@@ -1,101 +1,32 @@
-/* === Grundlegendes Layout-Fix für Footer === */
 body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
   margin: 0;
   font-family: Arial, sans-serif;
   background-color: #f4f1fa;
   color: #3d1562;
 }
 
-main {
-  flex: 1;
-}
-
-/* === LOGIN SEITE === */
-.login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 90vh;
-}
-
-.title {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
-.login-box {
-  background-color: #e6ddf4;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 300px;
-}
-
-.login-box input {
-  width: 100%;
-  padding: 0.75rem;
-  margin: 0.5rem 0;
-  border: 1px solid #c4b3e0;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
-.login-box button {
-  background-color: #3d1562;
-  color: white;
-  padding: 0.75rem;
-  width: 100%;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  margin-top: 1rem;
-  cursor: pointer;
-}
-
-.login-box button:hover {
-  background-color: #4d1b7c;
-}
-
-.forgot-password {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #3d1562;
-  text-decoration: none;
-}
-
-/* === DASHBOARD SEITE === */
 header {
   background-color: #e6ddf4;
-  padding: 1rem 2rem;
+  padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-header .logo {
-  font-size: 1.5rem;
+.logo {
   font-weight: bold;
-  text-align: center;
-  flex: 1;
-  color: #3d1562;
+  font-size: 1.5rem;
 }
 
 .menu-toggle,
 .settings-icon,
 .user-icon {
-  cursor: pointer;
+  background: none;
+  border: none;
+  fill: #3d1562;
   width: 24px;
   height: 24px;
-  fill: #3d1562;
+  cursor: pointer;
 }
 
 .menu {
@@ -103,159 +34,51 @@ header .logo {
   top: 60px;
   right: 10px;
   background-color: #f4f1fa;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border: 1px solid #ccc;
   padding: 1rem;
   border-radius: 8px;
-  z-index: 10;
 }
 
 .hidden {
   display: none;
 }
 
-.sidebar {
-  position: fixed;
-  top: 70px;
-  left: 0;
-  width: 220px;
-  background-color: #f4f1fa;
-  padding: 1rem;
-  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-  height: 100%;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar li {
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #3d1562;
-  font-weight: 500;
-}
-
-.sidebar li svg {
-  width: 18px;
-  height: 18px;
-  fill: #3d1562;
-}
-
-/* === Filterbereich === */
-.filters {
-  padding: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-}
-
-select {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: 1px solid #c4b3e0;
-}
-
-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* === Chart === */
-.chart-container {
-  max-width: 90%;
-  margin: 0 auto 2rem auto;
-  padding: 1rem;
-  background: white;
+.main-content {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  height: 400px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* === Upload-Bereich === */
 .upload-area {
   border: 2px dashed #c4b3e0;
-  background-color: #f4f1fa;
-  border-radius: 10px;
   padding: 2rem;
   text-align: center;
+  border-radius: 10px;
+  background-color: #f4f1fa;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin: 2rem auto;
-  width: 80%;
-  max-width: 600px;
 }
 
-.upload-area:hover {
+.upload-area.dragover {
   background-color: #e6ddf4;
 }
 
-.upload-area svg {
-  width: 40px;
-  height: 40px;
-  fill: #3d1562;
-  margin-bottom: 1rem;
-}
-
-/* === Upload Info Liste === */
 .upload-info {
-  margin-top: 1.5rem;
-  text-align: left;
-  width: 80%;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
 }
 
 .upload-info li {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
   padding: 0.5rem 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ccc;
 }
 
-.upload-info .icon {
-  width: 20px;
-  height: 20px;
-  fill: #3d1562;
-}
-
-.upload-info .status-icon.valid {
-  fill: #6a1b9a;
-}
-
-.upload-info .status-icon.error {
-  fill: #c62828;
-}
-
-.upload-info .status-icon.processing {
-  fill: #9575cd;
-}
-
-.upload-info .delete-icon {
-  margin-left: auto;
-  cursor: pointer;
-  fill: #3d1562;
-}
-
-/* === Footer === */
 footer {
   text-align: center;
   padding: 1rem;
-  font-size: 0.85rem;
   background-color: #e6ddf4;
-  margin-top: auto;
-}
-
-footer a {
-  margin: 0 10px;
-  color: #3d1562;
-  text-decoration: none;
+  margin-top: 2rem;
 }

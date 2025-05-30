@@ -123,19 +123,3 @@ document.getElementById("logout-switch").addEventListener("change", function () 
     window.location.href = "index.html";
   }
 });
-"""
-
-# CSS wird wiederverwendet, vorhandene Datei verwenden
-os.makedirs(dashboard_dir, exist_ok=True)
-with open(os.path.join(dashboard_dir, "dashboard.html"), "w") as f:
-    f.write(dashboard_html)
-with open(os.path.join(dashboard_dir, "dashboard.js"), "w") as f:
-    f.write(dashboard_js)
-
-# Archiv erstellen
-dashboard_zip_path = "/mnt/data/dashboard_final_package.zip"
-with ZipFile(dashboard_zip_path, "w") as zipf:
-    zipf.write(os.path.join(dashboard_dir, "dashboard.html"), arcname="dashboard.html")
-    zipf.write(os.path.join(dashboard_dir, "dashboard.js"), arcname="dashboard.js")
-
-dashboard_zip_path

@@ -1,74 +1,67 @@
-
+document.addEventListener("DOMContentLoaded", function () {
+  // Sidebar toggle
+  window.toggleSidebar = function () {
+    document.getElementById("sidebar").classList.toggle("active");
+  };
 
   // Settings toggle
   window.toggleSettings = function () {
-    document.getElementById("settings-menu").classList.toggle("hidden");
+    const menu = document.getElementById("settings-menu");
+    menu.classList.toggle("hidden");
   };
 
-  // User menu toggle
-  window.toggleUserMenu = function () {
-    document.getElementById("user-menu").classList.toggle("hidden");
-  };
+  // KI-Toggle
+  const aiToggle = document.getElementById("disable-ai");
+  const bubbles = document.querySelectorAll(".speech-bubble");
 
-  // Logout action
-  const logoutSwitch = document.getElementById("logout-switch");
-  if (logoutSwitch) {
-    logoutSwitch.addEventListener("change", function () {
-      if (this.checked) {
-        window.location.href = "index.html";
-      }
+  aiToggle.addEventListener("change", function () {
+    bubbles.forEach(bubble => {
+      bubble.style.display = this.checked ? "none" : "flex";
     });
-  }
+  });
 
-  // KI-Hinweis Toggle
-  const toggleHintsCheckbox = document.getElementById("toggleHints");
-  const aiHintsContainer = document.getElementById("aiHints");
-
-  if (toggleHintsCheckbox && aiHintsContainer) {
-    toggleHintsCheckbox.addEventListener("change", function () {
-      aiHintsContainer.style.display = this.checked ? "block" : "none";
-    });
-  }
-
-  // Chart.js - Demo Chart
-  const ctx = document.getElementById("detailChart").getContext("2d");
-  new Chart(ctx, {
-    type: "line",
+  // Chart Setup (ähnlich dem Dashboard)
+  const ctx = document.getElementById('detailChart').getContext('2d');
+  const detailChart = new Chart(ctx, {
+    type: 'line',
     data: {
-      labels: ["Jan", "Feb", "Mär", "Apr", "Mai"],
-      datasets: [
-        {
-          label: "ADR",
-          data: [120, 130, 125, 140, 135],
-          borderColor: "#3d1562",
-          backgroundColor: "rgba(61, 21, 98, 0.1)",
-          fill: true,
-          tension: 0.3,
-          pointRadius: 5,
-          pointHoverRadius: 7,
-        },
-        {
-          label: "Benchmark",
-          data: [115, 125, 120, 130, 125],
-          borderColor: "#a688cc",
-          borderDash: [5, 5],
-          backgroundColor: "rgba(166, 136, 204, 0.1)",
-          fill: false,
-          tension: 0.3,
-        },
-      ],
+      labels: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni'],
+      datasets: [{
+        label: 'Umsatz (in €)',
+        data: [12000, 19000, 3000, 5000, 20000, 30000],
+        fill: true,
+        borderColor: '#6A1B9A',
+        backgroundColor: 'rgba(106, 27, 154, 0.2)',
+        tension: 0.4
+      }]
     },
     options: {
       responsive: true,
       plugins: {
         legend: {
-          position: "top",
-        },
-        title: {
-          display: true,
-          text: "Detailanalyse ADR vs. Benchmark",
-        },
+          labels: {
+            color: '#333'
+          }
+        }
       },
-    },
+      scales: {
+        x: {
+          ticks: {
+            color: '#555'
+          },
+          grid: {
+            display: false
+          }
+        },
+        y: {
+          ticks: {
+            color: '#555'
+          },
+          grid: {
+            color: '#eee'
+          }
+        }
+      }
+    }
   });
 });

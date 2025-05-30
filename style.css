@@ -266,3 +266,35 @@ footer a {
   color: #3d1562;
   text-decoration: none;
 }
+
+.chart-container {
+  margin-top: 2rem;
+}
+
+.toggle-section {
+  margin-top: 2rem;
+  font-weight: bold;
+  color: #3d1562;
+}
+
+.insight-bubbles {
+  margin-top: 1.5rem;
+  display: block;
+}
+
+.bubble {
+  background-color: #3d1562;
+  color: #f4f1fa;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bubble-icon {
+  width: 24px;
+  height: 24px;
+  fill: #f4f1fa;
+}

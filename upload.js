@@ -1,73 +1,85 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const uploadArea = document.getElementById("uploadArea");
+  const uploadBox = document.getElementById("uploadArea");
   const fileInput = document.getElementById("fileInput");
   const fileList = document.getElementById("fileList");
-  const uploadStatus = document.getElementById("uploadStatus");
   const analyzeButton = document.getElementById("analyzeButton");
 
-  function showStatus(message, isSuccess) {
-    uploadStatus.textContent = message;
-    uploadStatus.className = isSuccess ? "upload-status success" : "upload-status error";
-    if (isSuccess) {
-      analyzeButton.classList.remove("hidden");
-    } else {
-      analyzeButton.classList.add("hidden");
+  function resetUI() {
+    fileList.innerHTML = "";
+    if (analyzeButton) analyzeButton.classList.add("hidden");
+  }
+
+  function getSVG(icon) {
+    switch (icon) {
+      case "success":
+        return `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="status-icon valid">
+            <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
+          </svg>`;
+      case "error":
+        return `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="status-icon error">
+            <path fill-rule="evenodd" d="M3.05 3.05a7 7 0 1 1 9.9 9.9 7 7 0 0 1-9.9-9.9Zm1.627.566 7.707 7.707a5.501 5.501 0 0 0-7.707-7.707Zm6.646 8.768L3.616 4.677a5.501 5.501 0 0 0 7.707 7.707Z" clip-rule="evenodd" />
+          </svg>`;
+      default:
+        return "";
     }
   }
 
-  function handleFiles(files) {
-    fileList.innerHTML = "";
-    uploadStatus.textContent = "";
-    analyzeButton.classList.add("hidden");
-
-    Array.from(files).forEach(file => {
-      const li = document.createElement("li");
-      li.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
-
-      if (file.size > 1024 * 1024) {
-        showStatus("Upload fehlgeschlagen: Datei ist größer als 1 MB.", false);
-        li.classList.add("error");
-      } else if (!["image/png", "image/jpeg", "application/pdf"].includes(file.type)) {
-        showStatus("Upload fehlgeschlagen: Ungültiges Dateiformat.", false);
-        li.classList.add("error");
-      } else {
-        li.classList.add("success");
-        showStatus("Upload erfolgreich!", true);
-      }
-
-      fileList.appendChild(li);
-    });
+  function displayFileInfo(file, success) {
+    const listItem = document.createElement("li");
+    listItem.innerHTML = `
+      ${getSVG(success ? "success" : "error")}
+      <span>${file.name} (${Math.round(file.size / 1024)} KB) – ${
+      success ? "Upload erfolgreich" : "Upload fehlgeschlagen"
+    }</span>
+    `;
+    fileList.appendChild(listItem);
   }
 
-  // Drag & Drop
-  uploadArea.addEventListener("dragover", (e) => {
+  function handleFile(file) {
+    resetUI();
+    if (file.size > 1 * 1024 * 1024) {
+      displayFileInfo(file, false);
+    } else {
+      displayFileInfo(file, true);
+      if (analyzeButton) analyzeButton.classList.remove("hidden");
+    }
+  }
+
+  uploadBox.addEventListener("dragover", (e) => {
     e.preventDefault();
-    uploadArea.classList.add("highlight");
+    uploadBox.classList.add("hover");
   });
 
-  uploadArea.addEventListener("dragleave", () => {
-    uploadArea.classList.remove("highlight");
+  uploadBox.addEventListener("dragleave", () => {
+    uploadBox.classList.remove("hover");
   });
 
-  uploadArea.addEventListener("drop", (e) => {
+  uploadBox.addEventListener("drop", (e) => {
     e.preventDefault();
-    uploadArea.classList.remove("highlight");
-    const files = e.dataTransfer.files;
-    handleFiles(files);
+    uploadBox.classList.remove("hover");
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
   });
 
-  // Datei-Auswahl
-  fileInput.addEventListener("change", (e) => {
-    handleFiles(e.target.files);
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (file) handleFile(file);
   });
 
-  // Logout-Switch
+  // Logout
   const logoutSwitch = document.getElementById("logout-switch");
   if (logoutSwitch) {
     logoutSwitch.addEventListener("change", function () {
-      if (this.checked) {
-        window.location.href = "index.html";
-      }
+      if (this.checked) window.location.href = "index.html";
+    });
+  }
+
+  // Analyse-Button
+  if (analyzeButton) {
+    analyzeButton.addEventListener("click", function () {
+      window.location.href = "detailansicht.html";
     });
   }
 });

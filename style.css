@@ -1,20 +1,70 @@
-
-/* Allgemeine Grundstruktur */
+/* ====== Allgemeines Layout ====== */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background-color: #f4f1fa;
   color: #3d1562;
-  min-height: 100vh;
+}
+
+/* ====== LOGIN SEITE ====== */
+.login-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
 }
 
-main {
-  flex: 1;
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
 }
 
-/* HEADER-BEREICH */
+.login-box {
+  background-color: #e6ddf4;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border: 1px solid #c4b3e0;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.login-box button {
+  background-color: #3d1562;
+  color: white;
+  padding: 0.75rem;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.login-box button:hover {
+  background-color: #4d1b7c;
+}
+
+.forgot-password {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #3d1562;
+  text-decoration: none;
+}
+
+/* ====== HEADER / TOP-LEISTE ====== */
 header {
   background-color: #e6ddf4;
   padding: 1rem 2rem;
@@ -22,21 +72,14 @@ header {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.menu-toggle {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #3d1562;
+  position: relative;
 }
 
 .logo {
   font-size: 1.8rem;
   font-weight: bold;
+  flex: 1;
   text-align: center;
-  flex-grow: 1;
   color: #3d1562;
 }
 
@@ -49,10 +92,46 @@ header {
 .top-right-icons svg {
   width: 24px;
   height: 24px;
+  fill: #3d1562;
   cursor: pointer;
+}
+
+/* ====== Sidebar ====== */
+.sidebar {
+  position: absolute;
+  top: 70px;
+  left: 10px;
+  width: 220px;
+  background-color: #f4f1fa;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #3d1562;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.sidebar li svg {
+  width: 20px;
+  height: 20px;
   fill: #3d1562;
 }
 
+/* ====== Menüs ====== */
 .menu {
   position: absolute;
   top: 60px;
@@ -68,50 +147,24 @@ header {
   display: none;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 220px;
-  background-color: #f4f1fa;
-  position: absolute;
-  top: 70px;
-  left: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  padding: 1rem;
-  border-radius: 8px;
-  z-index: 10;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar li {
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  color: #3d1562;
-  font-weight: 500;
-}
-
-.sidebar li svg {
-  margin-right: 0.5rem;
-  fill: #3d1562;
-  width: 16px;
-  height: 16px;
-}
-
-/* Upload Bereich */
+/* ====== Hauptinhalte / Container ====== */
 .main-content {
-  max-width: 800px;
+  max-width: 90%;
   margin: 2rem auto;
-  padding: 2rem;
   background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
+@media (min-width: 1400px) {
+  .chart-container,
+  .main-content {
+    width: 80%;
+  }
+}
+
+/* ====== Upload-Bereich ====== */
 .upload-area {
   border: 2px dashed #c4b3e0;
   background-color: #f4f1fa;
@@ -133,6 +186,20 @@ header {
   margin-bottom: 1rem;
 }
 
+button {
+  background-color: #3d1562;
+  color: #f4f1fa;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #5a278d;
+}
+
+/* ====== Datei-Feedback ====== */
 .upload-info {
   margin-top: 1.5rem;
   list-style: none;
@@ -147,36 +214,45 @@ header {
   border-bottom: 1px solid #ddd;
 }
 
-.icon {
+.upload-info .status-icon {
   width: 20px;
   height: 20px;
-  fill: #3d1562;
 }
 
 .status-icon.valid {
-  fill: #6a1b9a;
+  fill: #4caf50;
 }
 
 .status-icon.error {
-  fill: #c62828;
+  fill: #d32f2f;
 }
 
-.analyze-button {
+.status-icon.processing {
+  fill: #9575cd;
+}
+
+.upload-info .delete-icon {
+  margin-left: auto;
+  cursor: pointer;
+  fill: #3d1562;
+}
+
+.analysis-button {
+  margin-left: auto;
+  padding: 0.4rem 1rem;
+  font-size: 0.95rem;
   background-color: #3d1562;
   color: #f4f1fa;
-  padding: 0.4rem 0.75rem;
   border: none;
   border-radius: 5px;
-  font-size: 0.85rem;
   cursor: pointer;
-  margin-left: auto;
 }
 
-.analyze-button:hover {
-  background-color: #4d1b7c;
+.analysis-button:hover {
+  background-color: #4e2c7a;
 }
 
-/* FOOTER */
+/* ====== Footer ====== */
 footer {
   text-align: center;
   padding: 1rem;
@@ -189,12 +265,4 @@ footer a {
   margin: 0 10px;
   color: #3d1562;
   text-decoration: none;
-}
-
-/* Responsive Anpassung */
-@media (min-width: 1400px) {
-  .chart-container,
-  .main-content {
-    width: 80%;
-  }
 }

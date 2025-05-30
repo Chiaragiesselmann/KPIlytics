@@ -1,93 +1,85 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const uploadBox = document.getElementById("uploadArea");
+  const uploadArea = document.getElementById("uploadArea");
   const fileInput = document.getElementById("fileInput");
   const fileList = document.getElementById("fileList");
-  const analyzeButton = document.getElementById("analyzeButton");
 
-  function resetUI() {
+  function createStatusIcon(type) {
+    const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    icon.setAttribute("class", "status-icon");
+
+    if (type === "valid") {
+      icon.classList.add("valid");
+      icon.innerHTML = `<path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />`;
+    } else if (type === "error") {
+      icon.classList.add("error");
+      icon.innerHTML = `<path fill-rule="evenodd" d="M3.05 3.05a7 7 0 1 1 9.9 9.9 7 7 0 0 1-9.9-9.9Zm1.627.566 7.707 7.707a5.501 5.501 0 0 0-7.707-7.707Zm6.646 8.768L3.616 4.677a5.501 5.501 0 0 0 7.707 7.707Z" clip-rule="evenodd" />`;
+    } else if (type === "processing") {
+      icon.classList.add("processing");
+      icon.innerHTML = `<path fill-rule="evenodd" d="M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8Zm7.75-4.25a.75.75 0 0 0-1.5 0V8c0 .414.336.75.75.75h3.25a.75.75 0 0 0 0-1.5h-2.5v-3.5Z" clip-rule="evenodd" />`;
+    }
+
+    return icon;
+  }
+
+  function handleFiles(files) {
     fileList.innerHTML = "";
-    if (analyzeButton) analyzeButton.classList.add("hidden");
+
+    Array.from(files).forEach(file => {
+      const li = document.createElement("li");
+      const fileName = document.createElement("span");
+      fileName.textContent = file.name;
+
+      const ext = file.name.split(".").pop().toLowerCase();
+      const validExtensions = ["pdf", "xlsx", "xls"];
+
+      let iconType = validExtensions.includes(ext) ? "valid" : "error";
+      const statusIcon = createStatusIcon(iconType);
+      li.appendChild(statusIcon);
+      li.appendChild(fileName);
+
+      if (iconType === "valid") {
+        const analysisButton = document.createElement("button");
+        analysisButton.textContent = "Zur Analyse";
+        analysisButton.className = "analysis-button";
+        analysisButton.onclick = () => {
+          window.location.href = "detail.html";
+        };
+        li.appendChild(analysisButton);
+      }
+
+      fileList.appendChild(li);
+    });
   }
 
-  function getSVG(icon) {
-    switch (icon) {
-      case "success":
-        return `
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="status-icon valid">
-            <path fill-rule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
-          </svg>`;
-      case "error":
-        return `
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="status-icon error">
-            <path fill-rule="evenodd" d="M3.05 3.05a7 7 0 1 1 9.9 9.9 7 7 0 0 1-9.9-9.9Zm1.627.566 7.707 7.707a5.501 5.501 0 0 0-7.707-7.707Zm6.646 8.768L3.616 4.677a5.501 5.501 0 0 0 7.707 7.707Z" clip-rule="evenodd" />
-          </svg>`;
-      default:
-        return "";
-    }
-  }
-
-  function displayFileInfo(file, success) {
-    const listItem = document.createElement("li");
-    listItem.innerHTML = `
-      ${getSVG(success ? "success" : "error")}
-      <span>${file.name} (${Math.round(file.size / 1024)} KB) – ${
-      success ? "Upload erfolgreich" : "Upload fehlgeschlagen"
-    }</span>
-    `;
-    fileList.appendChild(listItem);
-  }
-
-  function handleFile(file) {
-    resetUI();
-    if (file.size > 1 * 1024 * 1024) {
-      displayFileInfo(file, false);
-    } else {
-      displayFileInfo(file, true);
-      if (analyzeButton) analyzeButton.classList.remove("hidden");
-    }
-  }
-
-  uploadBox.addEventListener("dragover", (e) => {
+  uploadArea.addEventListener("dragover", e => {
     e.preventDefault();
-    uploadBox.classList.add("hover");
+    uploadArea.classList.add("highlight");
   });
 
-  uploadBox.addEventListener("dragleave", () => {
-    uploadBox.classList.remove("hover");
+  uploadArea.addEventListener("dragleave", () => {
+    uploadArea.classList.remove("highlight");
   });
 
-  uploadBox.addEventListener("drop", (e) => {
+  uploadArea.addEventListener("drop", e => {
     e.preventDefault();
-    uploadBox.classList.remove("hover");
-    const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
+    uploadArea.classList.remove("highlight");
+    handleFiles(e.dataTransfer.files);
   });
 
   fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0];
-    if (file) handleFile(file);
+    handleFiles(fileInput.files);
   });
 
-  // Logout
-  const logoutSwitch = document.getElementById("logout-switch");
-  if (logoutSwitch) {
-    logoutSwitch.addEventListener("change", function () {
-      if (this.checked) window.location.href = "index.html";
-    });
-  }
-
-  // Analyse-Button
-  if (analyzeButton) {
-    analyzeButton.addEventListener("click", function () {
-      window.location.href = "detailansicht.html";
-    });
-  }
+  document.getElementById("logout-switch").addEventListener("change", function () {
+    if (this.checked) {
+      window.location.href = "index.html";
+    }
+  });
 });
 
-// Menüfunktionen
+// Sidebar toggles
 function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  if (sidebar) sidebar.classList.toggle("hidden");
+  document.getElementById("sidebar").classList.toggle("hidden");
 }
 
 function toggleSettings() {

@@ -161,4 +161,131 @@ select {
   padding: 0.5rem;
   border: 1px solid #c4b3e0;
   border-radius: 5px;
-  font
+  font-size: 1rem;
+}
+
+/* Upload-Seite */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+  max-width: 1000px;
+  margin: auto;
+  width: 90%;
+}
+
+.upload-area {
+  border: 2px dashed #c4b3e0;
+  background-color: #f4f1fa;
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.upload-area:hover,
+.upload-area.highlight {
+  background-color: #e6ddf4;
+}
+
+.upload-icon {
+  width: 36px;
+  height: 36px;
+  fill: #3d1562;
+  margin-bottom: 0.75rem;
+}
+
+.upload-area button {
+  margin-top: 1rem;
+  background-color: #3d1562;
+  color: #f4f1fa;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.upload-area button:hover {
+  background-color: #4f1c75;
+}
+
+.upload-info {
+  margin-top: 1.5rem;
+  width: 100%;
+  list-style: none;
+  padding: 0;
+}
+
+.upload-info li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.upload-info li.error {
+  color: #c62828;
+}
+
+.upload-info li.success {
+  color: #2e7d32;
+}
+
+/* Upload Status */
+.upload-status {
+  margin-top: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.upload-status.success {
+  color: #2e7d32;
+}
+
+.upload-status.error {
+  color: #c62828;
+}
+
+/* Analyse Button */
+#analyzeButton {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #3d1562;
+  color: #e6ddf4;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#analyzeButton:hover {
+  background-color: #5a2c80;
+}
+
+#analyzeButton.hidden {
+  display: none;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #e6ddf4;
+  font-size: 0.85rem;
+  margin-top: auto;
+}
+
+footer a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #3d1562;
+}
+
+/* RESPONSIVE */
+@media (min-width: 1400px) {
+  .chart-container,
+  .main-content {
+    width: 80%;
+  }
+}

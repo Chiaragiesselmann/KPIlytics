@@ -1,4 +1,4 @@
-/* Allgemeines Layout */
+/* ========== GRUNDSTYLING ========== */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -6,20 +6,27 @@ body {
   color: #3d1562;
 }
 
+a {
+  text-decoration: none;
+  color: #3d1562;
+}
+
+/* ========== HEADER & TOP ICONS ========== */
 header {
   background-color: #e6ddf4;
   padding: 1rem 2rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
   flex: 1;
+  color: #3d1562;
 }
 
 .menu-toggle {
@@ -33,10 +40,10 @@ header {
 .top-right-icons {
   display: flex;
   gap: 1rem;
-  align-items: center;
 }
 
-.top-right-icons svg {
+.settings-icon,
+.user-icon {
   width: 24px;
   height: 24px;
   fill: #3d1562;
@@ -58,16 +65,17 @@ header {
   display: none;
 }
 
-/* Sidebar */
+/* ========== SIDEBAR ========== */
 .sidebar {
   position: fixed;
   top: 60px;
   left: 0;
-  background-color: #f4f1fa;
   width: 220px;
   height: 100%;
-  padding: 1rem;
+  background-color: #f4f1fa;
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  z-index: 10;
 }
 
 .sidebar ul {
@@ -80,20 +88,21 @@ header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  cursor: pointer;
   color: #3d1562;
+  font-weight: 500;
+  cursor: pointer;
 }
 
-.sidebar li svg {
+.sidebar svg.icon {
   width: 20px;
   height: 20px;
   fill: #3d1562;
 }
 
-/* Upload Main Content */
+/* ========== MAIN CONTENT ========== */
 .main-content {
   margin: 2rem auto;
-  max-width: 800px;
+  max-width: 1000px;
   padding: 2rem;
   background: white;
   border-radius: 10px;
@@ -107,6 +116,7 @@ header {
   border-radius: 10px;
   padding: 2rem;
   text-align: center;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
@@ -121,8 +131,26 @@ header {
   margin-bottom: 1rem;
 }
 
+/* Upload Button */
+.upload-area button {
+  background-color: #3d1562;
+  color: #f4f1fa;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.upload-area button:hover {
+  background-color: #4d1b7c;
+}
+
+/* Upload Info */
 .upload-info {
   margin-top: 2rem;
+  text-align: left;
   list-style: none;
   padding: 0;
 }
@@ -135,17 +163,17 @@ header {
   border-bottom: 1px solid #ddd;
 }
 
-.status-icon {
+.upload-info svg {
   width: 20px;
   height: 20px;
 }
 
 .status-icon.valid {
-  fill: #6a1b9a;
+  fill: #4caf50;
 }
 
 .status-icon.error {
-  fill: #c62828;
+  fill: #d32f2f;
 }
 
 .status-icon.processing {
@@ -158,25 +186,24 @@ header {
   fill: #3d1562;
 }
 
-/* Analyse Button */
+/* Analyze Button */
 #analyze-button {
-  display: none;
+  display: inline-block;
   margin-top: 2rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
   background-color: #3d1562;
   color: #e6ddf4;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
   cursor: pointer;
 }
 
 #analyze-button:hover {
-  background-color: #4d1b7c;
+  background-color: #512380;
 }
 
-/* Footer */
+/* ========== FOOTER ========== */
 footer {
   text-align: center;
   padding: 1rem;
@@ -188,11 +215,11 @@ footer {
 footer a {
   margin: 0 10px;
   color: #3d1562;
-  text-decoration: none;
 }
 
-/* Responsive Breite */
+/* ========== MEDIA QUERIES ========== */
 @media (min-width: 1400px) {
+  .chart-container,
   .main-content {
     width: 80%;
   }

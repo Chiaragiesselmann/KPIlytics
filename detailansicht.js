@@ -1,106 +1,113 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const ctx = document.getElementById("detailChart").getContext("2d");
-  let currentChart = null;
+// ==== MENU / SIDEBAR LOGIK ====
 
-  function createChart(label, data) {
-    if (currentChart) currentChart.destroy();
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('hidden');
+}
 
-    currentChart = new Chart(ctx, {
-      type: "line",
+function toggleSettingsMenu() {
+  const settingsMenu = document.getElementById('settings-menu');
+  settingsMenu.classList.toggle('hidden');
+}
+
+function toggleUserMenu() {
+  const userMenu = document.getElementById('user-menu');
+  userMenu.classList.toggle('hidden');
+}
+
+// ==== CHART (Detailansicht & Dashboard) ====
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ctx = document.getElementById('chart');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'line',
       data: {
-        labels: ["Januar", "Februar", "März", "April", "Mai", "Juni"],
+        labels: ['Jan', 'Feb', 'März', 'Apr', 'Mai', 'Juni'],
         datasets: [
           {
-            label: label,
-            data: data,
-            borderColor: "#3d1562",
-            backgroundColor: "rgba(61, 21, 98, 0.2)",
+            label: 'Umsatz (in €)',
+            data: [12000, 14000, 13000, 16000, 19000, 22000],
+            borderColor: '#3d1562',
+            backgroundColor: 'rgba(61, 21, 98, 0.2)',
             fill: true,
-            tension: 0.3,
-            pointRadius: 4,
-            pointBackgroundColor: "#3d1562",
-          },
-        ],
+            pointBackgroundColor: '#3d1562',
+            tension: 0.3
+          }
+        ]
       },
       options: {
         responsive: true,
         plugins: {
           legend: {
             labels: {
-              color: "#3d1562",
-            },
-          },
+              color: '#3d1562'
+            }
+          }
         },
         scales: {
           x: {
-            ticks: {
-              color: "#3d1562",
-            },
+            ticks: { color: '#3d1562' }
           },
           y: {
-            ticks: {
-              color: "#3d1562",
-            },
-          },
-        },
-      },
-    });
-  }
-
-  function getDataSet(kpi) {
-    switch (kpi) {
-      case "umsatz":
-        return [12000, 15000, 13000, 17000, 21000, 28000];
-      case "buchungen":
-        return [80, 95, 70, 110, 150, 200];
-      case "conversion":
-        return [2.5, 2.8, 3.0, 3.3, 3.8, 4.1];
-      default:
-        return [];
-    }
-  }
-
-  window.updateChart = function () {
-    const selectedKpi = document.getElementById("kpi-select").value;
-    const labelMap = {
-      umsatz: "Umsatz (in €)",
-      buchungen: "Buchungen",
-      conversion: "Conversion Rate (%)",
-    };
-    const data = getDataSet(selectedKpi);
-    createChart(labelMap[selectedKpi], data);
-  };
-
-  // Initiale Anzeige
-  updateChart();
-
-  // KI-Hinweise umschalten
-  window.toggleAiHints = function () {
-    const aiSection = document.getElementById("ai-hints");
-    aiSection.style.display = aiSection.style.display === "none" ? "block" : "none";
-  };
-
-  // Menüfunktionen
-  window.toggleSidebar = function () {
-    const sidebar = document.getElementById("sidebar");
-    if (sidebar) sidebar.classList.toggle("hidden");
-  };
-
-  window.toggleSettings = function () {
-    document.getElementById("settings-menu").classList.toggle("hidden");
-  };
-
-  window.toggleUserMenu = function () {
-    document.getElementById("user-menu").classList.toggle("hidden");
-  };
-
-  // Logout-Switch
-  const logoutSwitch = document.getElementById("logout-switch");
-  if (logoutSwitch) {
-    logoutSwitch.addEventListener("change", function () {
-      if (this.checked) {
-        window.location.href = "index.html";
+            ticks: { color: '#3d1562' }
+          }
+        }
       }
     });
   }
+
+  // ==== KI-HINWEISE EIN-/AUSBLENDEN ====
+  const toggleCheckbox = document.getElementById('toggle-hints');
+  if (toggleCheckbox) {
+    toggleCheckbox.addEventListener('change', () => {
+      document.querySelectorAll('.ai-hint').forEach((hint) => {
+        hint.style.display = toggleCheckbox.checked ? 'none' : 'block';
+      });
+    });
+  }
 });
+
+// ==== FILE-UPLOAD (optional für Analyse) ====
+
+const uploadArea = document.querySelector('.upload-area');
+if (uploadArea) {
+  uploadArea.addEventListener('click', () => {
+    document.getElementById('file-input')?.click();
+  });
+
+  uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('hover');
+  });
+
+  uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('hover');
+  });
+
+  uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('hover');
+    const files = e.dataTransfer.files;
+    if (files.length) {
+      handleFileUpload(files[0]);
+    }
+  });
+}
+
+function handleFileUpload(file) {
+  // Hier kannst du die Logik zur Dateiverarbeitung hinzufügen
+  console.log('Datei empfangen:', file.name);
+}
+
+// ==== Filter-Logik (optional erweiterbar) ====
+
+const filterSelect = document.getElementById('filter-select');
+if (filterSelect) {
+  filterSelect.addEventListener('change', (e) => {
+    const selected = e.target.value;
+    console.log('Filter gewählt:', selected);
+    // Beispielhafte Umsetzung
+    // Chart-Daten dynamisch anpassen oder Analyse-Hinweise aktualisieren
+  });
+}

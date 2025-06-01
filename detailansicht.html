@@ -3,76 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KPIlytics – Detailansicht</title>
+  <title>KPIlytics – Analyse</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+
   <header>
     <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
     <div class="logo">KPIlytics</div>
     <div class="top-right-icons">
-      <!-- Settings Icon -->
-      <svg onclick="toggleSettingsMenu()" class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-        <path d="M9.5 1a1.5 1.5 0 00-3 0h-2a.5.5 0 000 1H6.5v1.02a5.5 5.5 0 00-2.8 1.63l-.72-.72a.5.5 0 10-.71.71l.72.72a5.5 5.5 0 00-1.63 2.8H1.5a.5.5 0 000 1h1.02a5.5 5.5 0 001.63 2.8l-.72.72a.5.5 0 10.71.71l.72-.72a5.5 5.5 0 002.8 1.63V14.5a.5.5 0 001 0V13.48a5.5 5.5 0 002.8-1.63l.72.72a.5.5 0 10.71-.71l-.72-.72a5.5 5.5 0 001.63-2.8H14.5a.5.5 0 000-1h-1.02a5.5 5.5 0 00-1.63-2.8l.72-.72a.5.5 0 00-.71-.71l-.72.72a5.5 5.5 0 00-2.8-1.63V2.5a.5.5 0 00-1 0V3.48a5.5 5.5 0 00-2.8 1.63V2H9.5a.5.5 0 000-1h-2z"/>
+      <!-- Settings -->
+      <svg onclick="toggleSettings()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M9.243 3a3 3 0 0 0-2.995 2.824A4.502 4.502 0 0 0 8 14a4.5 4.5 0 0 0 1.243-8.824A3 3 0 0 0 9.243 3z"/>
       </svg>
-      <!-- User Icon -->
-      <svg onclick="toggleUserMenu()" class="user-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-        <path d="M8 8a3 3 0 100-6 3 3 0 000 6zm4 1H4a4 4 0 00-4 4v1a1 1 0 001 1h14a1 1 0 001-1v-1a4 4 0 00-4-4z"/>
+      <!-- User -->
+      <svg onclick="toggleUserMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM4 13s1-1 4-1 4 1 4 1-1 1-4 1-4-1-4-1z"/>
       </svg>
     </div>
 
-    <!-- Settings Dropdown -->
     <div id="settings-menu" class="menu hidden">
       <div><strong>Einstellungen</strong></div>
       <a href="#">Benutzer verwalten</a>
     </div>
 
-    <!-- User Dropdown -->
     <div id="user-menu" class="menu hidden">
       <label><input type="checkbox" id="logout-switch" /> Ausloggen</label>
     </div>
 
-    <!-- Sidebar -->
     <div id="sidebar" class="sidebar hidden">
       <ul>
-        <li><span class="icon">📁</span><a href="upload.html">Datei Upload</a></li>
-        <li><span class="icon">📊</span><a href="detailansicht.html">Detailansicht</a></li>
-        <li><span class="icon">💬</span><a href="feedback.html">Feedback</a></li>
+        <li><svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2a.75.75 0 0 1 .5.75v.5h8.5a.75.75 0 0 1 0 1.5H4.25v.5a.75.75 0 0 1-1.5 0V2.75A.75.75 0 0 1 3.75 2z"/></svg><a href="upload.html">Datei Upload</a></li>
+        <li><svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M9.243 3a3 3 0 0 0-2.995 2.824A4.502 4.502 0 0 0 8 14a4.5 4.5 0 0 0 1.243-8.824A3 3 0 0 0 9.243 3z"/></svg><a href="detailansicht.html">Analyse</a></li>
+        <li><svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2.5 5.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/></svg><a href="feedback.html">Feedback</a></li>
       </ul>
     </div>
   </header>
 
   <main class="main-content">
-    <div class="chart-card">
-      <!-- Filter -->
-      <div class="filters">
-        <label for="filter">Filter:</label>
-        <select id="filter" onchange="updateDetailChart()">
-          <option value="conversion">Conversion Rate</option>
-          <option value="besucher">Besucher</option>
-          <option value="umsatz">Umsatz</option>
-        </select>
-      </div>
-
-      <!-- Chart -->
-      <div class="chart-container">
-        <canvas id="detailChart"></canvas>
-      </div>
+    <!-- Filter + Chart -->
+    <div class="filters">
+      <label for="kpi-filter">Filter:</label>
+      <select id="kpi-filter" onchange="updateDetailChart()">
+        <option value="conversion">Conversion Rate</option>
+        <option value="besucher">Besucher</option>
+        <option value="umsatz">Umsatz</option>
+      </select>
+      <label>
+        <input type="checkbox" id="benchmark-toggle" onchange="updateDetailChart()" />
+        Benchmark anzeigen
+      </label>
     </div>
 
-    <!-- KI-Hinweise -->
-    <section class="ki-analysis">
-      <div class="ai-bubble">
-        <div class="ai-icon"></div>
-        Die Nutzerzahlen haben sich im Vergleich zum letzten Monat um 18 % erhöht.
-      </div>
-      <div class="ai-bubble">
-        <div class="ai-icon"></div>
-        Die Conversion Rate ist bei Mobilgeräten höher als bei Desktop-Besuchern.
-      </div>
+    <div class="chart-container">
+      <canvas id="chart1"></canvas>
+    </div>
 
-      <label class="ki-toggle">
-        <input type="checkbox" id="hide-hints" onchange="toggleKiHinweise()" />
+    <!-- KI-Auswertung -->
+    <section class="hints" id="ai-hints-section">
+      <div class="hint-bubble">Die Nutzerzahlen haben sich im Vergleich zum letzten Monat um 18 % erhöht.</div>
+      <div class="hint-bubble">Die Conversion Rate ist bei Mobilgeräten höher als bei Desktop-Besuchern.</div>
+      <label>
+        <input type="checkbox" id="toggle-hints" onchange="toggleHints()" />
         KI-Hinweise ausblenden
       </label>
     </section>

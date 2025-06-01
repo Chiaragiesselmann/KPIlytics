@@ -1,84 +1,115 @@
+// Chart Setup
+let chart;
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Chart.js initialisieren
-  const ctx = document.getElementById("chart").getContext("2d");
-  let chart = new Chart(ctx, {
+  initChart();
+  toggleHints(); // initialer Zustand
+});
+
+// Beispiel-Daten
+const kpiData = {
+  conversion: {
+    label: "Conversion Rate",
+    data: [2.4, 2.9, 3.1, 2.7, 3.5],
+    benchmark: [2.2, 2.5, 2.8, 2.6, 2.9]
+  },
+  besucher: {
+    label: "Besucher",
+    data: [1200, 1350, 1250, 1600, 1550],
+    benchmark: [1100, 1300, 1200, 1500, 1500]
+  },
+  umsatz: {
+    label: "Umsatz (€)",
+    data: [10000, 12500, 11500, 14000, 13500],
+    benchmark: [9500, 12000, 11000, 13500, 13200]
+  }
+};
+
+function initChart() {
+  const ctx = document.getElementById("chart1").getContext("2d");
+  const selectedKPI = document.getElementById("kpi-filter").value;
+  const showBenchmark = document.getElementById("benchmark-toggle").checked;
+
+  const dataset = getDatasets(selectedKPI, showBenchmark);
+
+  chart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun"],
-      datasets: [{
-        label: "Conversion Rate",
-        data: [10, 15, 12, 18, 22, 30],
-        borderColor: "#3d1562",
-        backgroundColor: "rgba(61, 21, 98, 0.1)",
-        tension: 0.4,
-        fill: true,
-        pointRadius: 5,
-        pointBackgroundColor: "#3d1562"
-      }]
+      labels: ["Jan", "Feb", "Mär", "Apr", "Mai"],
+      datasets: dataset
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false,
       plugins: {
         legend: {
-          labels: {
-            color: "#3d1562"
-          }
+          position: "top"
         }
       },
       scales: {
-        x: {
-          ticks: {
-            color: "#3d1562"
-          }
-        },
         y: {
-          ticks: {
-            color: "#3d1562"
-          }
+          beginAtZero: false
         }
       }
     }
   });
+}
 
-  // Filter-Änderung
-  document.getElementById("filter").addEventListener("change", function () {
-    const value = this.value;
+function updateDetailChart() {
+  const selectedKPI = document.getElementById("kpi-filter").value;
+  const showBenchmark = document.getElementById("benchmark-toggle").checked;
 
-    const datasets = {
-      "Conversion Rate": [10, 15, 12, 18, 22, 30],
-      "Absprungrate": [30, 25, 22, 20, 18, 16],
-      "Verweildauer": [2, 2.5, 3, 3.2, 4, 4.5]
-    };
+  const newDatasets = getDatasets(selectedKPI, showBenchmark);
 
-    chart.data.datasets[0].label = value;
-    chart.data.datasets[0].data = datasets[value];
-    chart.update();
-  });
+  chart.data.datasets = newDatasets;
+  chart.update();
+}
 
-  // Menüleiste ein-/ausblenden
-  window.toggleSidebar = function () {
-    const sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("hidden");
-  };
+function getDatasets(kpiKey, showBenchmark) {
+  const current = kpiData[kpiKey];
+  const datasets = [
+    {
+      label: current.label,
+      data: current.data,
+      fill: false,
+      borderColor: "#3d1562",
+      tension: 0.3
+    }
+  ];
 
-  // Einstellungen ein-/ausblenden
-  document.querySelector(".settings-icon").addEventListener("click", function () {
-    document.getElementById("settings-menu").classList.toggle("hidden");
-  });
-
-  // Benutzer-Icon Dropdown
-  document.querySelector(".user-icon").addEventListener("click", function () {
-    document.getElementById("user-menu").classList.toggle("hidden");
-  });
-
-  // KI-Hinweise umschalten
-  document.getElementById("toggle-ai").addEventListener("change", function () {
-    const aiHints = document.querySelectorAll(".ai-hint");
-    aiHints.forEach(hint => {
-      hint.style.display = this.checked ? "none" : "block";
+  if (showBenchmark) {
+    datasets.push({
+      label: "Benchmark",
+      data: current.benchmark,
+      fill: false,
+      borderColor: "#c4b3e0",
+      borderDash: [5, 5],
+      tension: 0.3
     });
-  });
-});
+  }
 
+  return datasets;
+}
+
+// KI-Hinweise ein-/ausblenden
+function toggleHints() {
+  const checkbox = document.getElementById("toggle-hints");
+  const hintSection = document.getElementById("ai-hints-section");
+
+  const bubbles = hintSection.querySelectorAll(".hint-bubble");
+  bubbles.forEach(bubble => {
+    bubble.style.display = checkbox.checked ? "none" : "block";
+  });
+}
+
+// Menüfunktionen
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("hidden");
+}
+
+function toggleSettings() {
+  document.getElementById("settings-menu").classList.toggle("hidden");
+}
+
+function toggleUserMenu() {
+  document.getElementById("user-menu").classList.toggle("hidden");
+}

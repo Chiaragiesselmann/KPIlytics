@@ -3,70 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KPIlytics - Detailansicht</title>
+  <title>KPIlytics – Detailansicht</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <header>
     <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
     <div class="logo">KPIlytics</div>
     <div class="top-right-icons">
-      <!-- Settings -->
-      <svg onclick="toggleSettings()" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M9.243 1.464a1 1 0 0 0-2.486 0L6.25 2.236a5.998 5.998 0 0 0-2.058.845L3.293 2.793 1.879 4.207l.707.707-.292.292a6.006 6.006 0 0 0-.845 2.058l-.772.507a1 1 0 0 0 0 1.732l.772.507a5.998 5.998 0 0 0 .845 2.058l-.292.292.707.707 1.414-1.414.292.292a5.998 5.998 0 0 0 2.058.845l.507.772a1 1 0 0 0 1.732 0l.507-.772a5.998 5.998 0 0 0 2.058-.845l.292.292 1.414-1.414-.292-.292a5.998 5.998 0 0 0 .845-2.058l.772-.507a1 1 0 0 0 0-1.732l-.772-.507a5.998 5.998 0 0 0-.845-2.058l.292-.292-1.414-1.414-.292.292a5.998 5.998 0 0 0-2.058-.845l-.507-.772z"/>
+      <svg onclick="toggleSettings()" class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+        <path d="M9.9 1.2L9.6 0h-3.1l-.3 1.2c-.5.1-1 .4-1.5.7L3 1 0 4l1 1.5c-.3.5-.6 1-.7 1.5L0 9.6v3.1l1.2.3c.1.5.4 1 .7 1.5L1 13l3-3 1.5 1c.5-.3 1-.6 1.5-.7l.3 1.2h3.1l.3-1.2c.5-.1 1-.4 1.5-.7L13 13l3-3-1-1.5c.3-.5.6-1 .7-1.5l1.2-.3V6.4l-1.2-.3c-.1-.5-.4-1-.7-1.5L16 3l-3 3-1.5-1c-.5.3-1 .6-1.5.7z"/>
       </svg>
-      <!-- User -->
-      <svg onclick="toggleUserMenu()" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4.5 7a.5.5 0 0 0 .5-.5V14a4.5 4.5 0 0 0-9 0v.5a.5.5 0 0 0 .5.5h8z"/>
+      <svg onclick="toggleUserMenu()" class="user-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+        <path d="M8 0a4 4 0 110 8 4 4 0 010-8zm0 9c-3 0-8 1.5-8 4.5V16h16v-2.5c0-3-5-4.5-8-4.5z"/>
       </svg>
     </div>
-
-    <!-- Settings-Menü -->
     <div id="settings-menu" class="menu hidden">
-      <a href="#">⚙️ Einstellungen</a><br />
-      <a href="#">👤 Benutzer verwalten</a>
+      <strong>⚙️ Einstellungen</strong><br />
+      <a href="#">Benutzer verwalten</a>
     </div>
-
-    <!-- User-Menü -->
     <div id="user-menu" class="menu hidden">
       <label><input type="checkbox" id="logout-switch" /> Ausloggen</label>
     </div>
-
-    <!-- Sidebar -->
     <div id="sidebar" class="sidebar hidden">
       <ul>
-        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M4 4h8v2H4V4zm0 3h8v2H4V7zm0 3h8v2H4v-2z"/></svg><a href="upload.html">Datei Upload</a></li>
-        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M4 4h8v8H4V4z"/></svg><a href="detailansicht.html">Detailansicht</a></li>
-        <li><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M4 4h8v1H4z"/></svg><a href="#">Feedback</a></li>
+        <li><svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5h-8.5z"/></svg><a href="upload.html">Datei Upload</a></li>
+        <li><svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M9.243 3 0 0 -2.995 2.824 4.502 4.502Z"/></svg><a href="detailansicht.html">Detailansicht</a></li>
+        <li><svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2.5 5a1.5 1.5 0 0 1 3 0v1h-3V5Z"/></svg><a href="feedback.html">Feedback</a></li>
       </ul>
     </div>
   </header>
 
-  <main>
-    <div class="chart-container">
-      <div class="filters">
-        <label for="kpi-select">Filter:</label>
-        <select id="kpi-select" onchange="updateDetailChart()">
-          <option value="umsatz">Umsatz</option>
-          <option value="conversion">Conversion Rate</option>
-          <option value="besucher">Besucher</option>
-        </select>
-        <label>
-          <input type="checkbox" id="benchmark-toggle" onchange="updateDetailChart()" />
-          Benchmark anzeigen
-        </label>
-      </div>
+  <main class="main-content">
+    <div class="filters">
+      <label for="kpiSelect">KPI:</label>
+      <select id="kpiSelect" onchange="updateDetailChart()">
+        <option value="umsatz">Umsatz</option>
+        <option value="besucher">Besucher</option>
+        <option value="conversion">Conversion Rate</option>
+      </select>
 
-      <canvas id="chart1" width="800" height="400"></canvas>
+      <label for="zeitraum">Zeitraum:</label>
+      <input type="month" id="startDate" value="2024-01" />
+      <input type="month" id="endDate" value="2024-05" />
+
+      <label><input type="checkbox" id="benchmarkToggle" onchange="updateDetailChart()" /> Benchmark anzeigen</label>
     </div>
 
-    <section class="ki-hinweise" id="ki-hinweise">
-      <!-- Dynamisch durch JS -->
+    <div class="chart-container">
+      <canvas id="detailChart"></canvas>
+    </div>
+
+    <section class="ai-hints" id="aiHints">
+      <!-- Dynamisch per JS generiert -->
     </section>
 
-    <div class="filters" style="margin-bottom: 2rem;">
-      <label><input type="checkbox" onchange="toggleHinweise(this)"> KI-Hinweise ausblenden</label>
+    <div class="filters">
+      <label><input type="checkbox" id="hideHints" onchange="toggleHints()"> KI-Hinweise ausblenden</label>
     </div>
   </main>
 

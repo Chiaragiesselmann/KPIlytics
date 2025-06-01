@@ -1,113 +1,93 @@
-// ==== MENU / SIDEBAR LOGIK ====
+# Creating the adjusted JavaScript content for the detailansicht.html page
 
-function toggleSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  sidebar.classList.toggle('hidden');
-}
-
-function toggleSettingsMenu() {
-  const settingsMenu = document.getElementById('settings-menu');
-  settingsMenu.classList.toggle('hidden');
-}
-
-function toggleUserMenu() {
-  const userMenu = document.getElementById('user-menu');
-  userMenu.classList.toggle('hidden');
-}
-
-// ==== CHART (Detailansicht & Dashboard) ====
-
-document.addEventListener('DOMContentLoaded', () => {
-  const ctx = document.getElementById('chart');
-  if (ctx) {
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Jan', 'Feb', 'März', 'Apr', 'Mai', 'Juni'],
-        datasets: [
-          {
-            label: 'Umsatz (in €)',
-            data: [12000, 14000, 13000, 16000, 19000, 22000],
-            borderColor: '#3d1562',
-            backgroundColor: 'rgba(61, 21, 98, 0.2)',
-            fill: true,
-            pointBackgroundColor: '#3d1562',
-            tension: 0.3
+adjusted_js = """
+document.addEventListener("DOMContentLoaded", function () {
+  // Chart.js initialisieren
+  const ctx = document.getElementById("chart").getContext("2d");
+  let chart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun"],
+      datasets: [{
+        label: "Conversion Rate",
+        data: [10, 15, 12, 18, 22, 30],
+        borderColor: "#3d1562",
+        backgroundColor: "rgba(61, 21, 98, 0.1)",
+        tension: 0.4,
+        fill: true,
+        pointRadius: 5,
+        pointBackgroundColor: "#3d1562"
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: "#3d1562"
           }
-        ]
+        }
       },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            labels: {
-              color: '#3d1562'
-            }
+      scales: {
+        x: {
+          ticks: {
+            color: "#3d1562"
           }
         },
-        scales: {
-          x: {
-            ticks: { color: '#3d1562' }
-          },
-          y: {
-            ticks: { color: '#3d1562' }
+        y: {
+          ticks: {
+            color: "#3d1562"
           }
         }
       }
-    });
-  }
-
-  // ==== KI-HINWEISE EIN-/AUSBLENDEN ====
-  const toggleCheckbox = document.getElementById('toggle-hints');
-  if (toggleCheckbox) {
-    toggleCheckbox.addEventListener('change', () => {
-      document.querySelectorAll('.ai-hint').forEach((hint) => {
-        hint.style.display = toggleCheckbox.checked ? 'none' : 'block';
-      });
-    });
-  }
-});
-
-// ==== FILE-UPLOAD (optional für Analyse) ====
-
-const uploadArea = document.querySelector('.upload-area');
-if (uploadArea) {
-  uploadArea.addEventListener('click', () => {
-    document.getElementById('file-input')?.click();
-  });
-
-  uploadArea.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    uploadArea.classList.add('hover');
-  });
-
-  uploadArea.addEventListener('dragleave', () => {
-    uploadArea.classList.remove('hover');
-  });
-
-  uploadArea.addEventListener('drop', (e) => {
-    e.preventDefault();
-    uploadArea.classList.remove('hover');
-    const files = e.dataTransfer.files;
-    if (files.length) {
-      handleFileUpload(files[0]);
     }
   });
-}
 
-function handleFileUpload(file) {
-  // Hier kannst du die Logik zur Dateiverarbeitung hinzufügen
-  console.log('Datei empfangen:', file.name);
-}
+  // Filter-Änderung
+  document.getElementById("filter").addEventListener("change", function () {
+    const value = this.value;
 
-// ==== Filter-Logik (optional erweiterbar) ====
+    const datasets = {
+      "Conversion Rate": [10, 15, 12, 18, 22, 30],
+      "Absprungrate": [30, 25, 22, 20, 18, 16],
+      "Verweildauer": [2, 2.5, 3, 3.2, 4, 4.5]
+    };
 
-const filterSelect = document.getElementById('filter-select');
-if (filterSelect) {
-  filterSelect.addEventListener('change', (e) => {
-    const selected = e.target.value;
-    console.log('Filter gewählt:', selected);
-    // Beispielhafte Umsetzung
-    // Chart-Daten dynamisch anpassen oder Analyse-Hinweise aktualisieren
+    chart.data.datasets[0].label = value;
+    chart.data.datasets[0].data = datasets[value];
+    chart.update();
   });
-}
+
+  // Menüleiste ein-/ausblenden
+  window.toggleSidebar = function () {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("hidden");
+  };
+
+  // Einstellungen ein-/ausblenden
+  document.querySelector(".settings-icon").addEventListener("click", function () {
+    document.getElementById("settings-menu").classList.toggle("hidden");
+  });
+
+  // Benutzer-Icon Dropdown
+  document.querySelector(".user-icon").addEventListener("click", function () {
+    document.getElementById("user-menu").classList.toggle("hidden");
+  });
+
+  // KI-Hinweise umschalten
+  document.getElementById("toggle-ai").addEventListener("change", function () {
+    const aiHints = document.querySelectorAll(".ai-hint");
+    aiHints.forEach(hint => {
+      hint.style.display = this.checked ? "none" : "block";
+    });
+  });
+});
+"""
+
+# Save it to a file
+script_path = "/mnt/data/script_detailansicht.js"
+with open(script_path, "w") as f:
+    f.write(adjusted_js)
+
+script_path

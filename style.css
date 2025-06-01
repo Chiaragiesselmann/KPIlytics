@@ -1,10 +1,4 @@
-from pathlib import Path
 
-# CSS-Dateipfad
-css_path = Path("/mnt/data/style.css")
-
-# CSS-Inhalt basierend auf den bisherigen Rückmeldungen und dem gewünschten Layout
-css_content = """
 /* ===== Allgemeine Grundstruktur ===== */
 body {
   margin: 0;
@@ -295,8 +289,3 @@ footer a {
     width: 80%;
   }
 }
-"""
-
-# Speichern
-css_path.write_text(css_content)
-css_path.name

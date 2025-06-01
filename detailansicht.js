@@ -1,6 +1,4 @@
-# Creating the adjusted JavaScript content for the detailansicht.html page
 
-adjusted_js = """
 document.addEventListener("DOMContentLoaded", function () {
   // Chart.js initialisieren
   const ctx = document.getElementById("chart").getContext("2d");
@@ -83,11 +81,4 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-"""
 
-# Save it to a file
-script_path = "/mnt/data/script_detailansicht.js"
-with open(script_path, "w") as f:
-    f.write(adjusted_js)
-
-script_path

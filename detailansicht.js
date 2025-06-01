@@ -1,128 +1,111 @@
-// ================= Menü & Sidebar ==================
-function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("hidden");
-}
+const ctx = document.getElementById("detailChart").getContext("2d");
 
-function toggleSettings() {
-  document.getElementById("settings-menu").classList.toggle("hidden");
-}
-
-function toggleUserMenu() {
-  document.getElementById("user-menu").classList.toggle("hidden");
-}
-
-// ================= Chart Daten ==================
-const daten = {
-  umsatz: {
-    label: "Umsatz (€)",
-    daten: [10000, 11500, 11000, 13000, 12500],
-    benchmark: [9500, 10800, 10500, 11800, 12000]
+let detailChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: ["Jan", "Feb", "Mär", "Apr", "Mai"],
+    datasets: [],
   },
-  conversion: {
-    label: "Conversion Rate (%)",
-    daten: [3.2, 3.5, 3.4, 3.9, 4.1],
-    benchmark: [3.0, 3.3, 3.2, 3.5, 3.8]
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+    },
+  },
+});
+
+const kpiData = {
+  umsatz: {
+    labels: ["Jan", "Feb", "Mär", "Apr", "Mai"],
+    values: [10000, 12000, 11000, 13000, 12500],
+    benchmark: [9500, 11500, 10800, 12500, 12300],
+    hints: [
+      "🧠 Die Nutzerzahlen haben sich im Vergleich zum letzten Monat um 18 % erhöht.",
+      "🧠 Der Umsatz überstieg im April den Durchschnitt um 12 %.",
+    ],
   },
   besucher: {
-    label: "Besucher",
-    daten: [800, 950, 1000, 1200, 1100],
-    benchmark: [750, 900, 920, 1100, 1080]
-  }
+    labels: ["Jan", "Feb", "Mär", "Apr", "Mai"],
+    values: [5000, 6500, 6200, 7000, 6800],
+    benchmark: [4800, 6300, 6000, 6800, 6700],
+    hints: [
+      "🧠 Im März kamen besonders viele Besucher über mobile Geräte.",
+      "🧠 Die Besucherzahlen steigen kontinuierlich seit Jahresbeginn.",
+    ],
+  },
+  conversion: {
+    labels: ["Jan", "Feb", "Mär", "Apr", "Mai"],
+    values: [2.5, 2.8, 2.9, 3.0, 2.95],
+    benchmark: [2.4, 2.6, 2.7, 2.9, 2.8],
+    hints: [
+      "🧠 Die Conversion Rate ist bei Mobilgeräten höher als bei Desktop-Besuchern.",
+      "🧠 Höchste Conversion im April erreicht.",
+    ],
+  },
 };
-
-const kiHinweise = {
-  umsatz: [
-    "📈 Die Umsätze haben sich im Vergleich zum letzten Monat um 18 % erhöht.",
-    "🛒 Die Region Süd zeigt einen signifikanten Anstieg im Produktverkauf."
-  ],
-  conversion: [
-    "🔄 Die Conversion Rate ist bei Mobilgeräten höher als bei Desktop-Besuchern.",
-    "💡 Nutzer mit Gutscheinen konvertieren doppelt so häufig."
-  ],
-  besucher: [
-    "👥 Die Besucherzahlen steigen an Wochenenden besonders stark.",
-    "📱 Mobile Zugriffe machen 65 % aller Besucher aus."
-  ]
-};
-
-let chart;
 
 function updateDetailChart() {
-  const kpi = document.getElementById("kpi-select").value;
-  const showBenchmark = document.getElementById("benchmark-toggle").checked;
+  const selectedKPI = document.getElementById("kpiSelect").value;
+  const showBenchmark = document.getElementById("benchmarkToggle").checked;
+  const start = document.getElementById("startDate").value;
+  const end = document.getElementById("endDate").value;
 
-  const labels = ["Jan", "Feb", "Mär", "Apr", "Mai"];
-  const kpiDaten = daten[kpi];
+  const data = kpiData[selectedKPI];
 
-  const datasets = [
+  // Zeitraum-Filterung (vereinfachtes Beispiel – alle Monate werden angezeigt)
+  const labels = data.labels;
+  const values = data.values;
+  const benchmark = data.benchmark;
+
+  let datasets = [
     {
-      label: kpiDaten.label,
-      data: kpiDaten.daten,
+      label: selectedKPI.charAt(0).toUpperCase() + selectedKPI.slice(1),
+      data: values,
       borderColor: "#3d1562",
-      backgroundColor: "rgba(61, 21, 98, 0.1)",
-      fill: false,
-      tension: 0.4
-    }
+      backgroundColor: "#3d1562",
+      tension: 0.4,
+    },
   ];
 
   if (showBenchmark) {
     datasets.push({
       label: "Benchmark",
-      data: kpiDaten.benchmark,
-      borderColor: "#aaa",
-      backgroundColor: "rgba(160,160,160,0.1)",
+      data: benchmark,
+      borderColor: "#c4b3e0",
       borderDash: [5, 5],
-      fill: false,
-      tension: 0.4
+      tension: 0.4,
     });
   }
 
-  if (chart) chart.destroy();
+  detailChart.data.labels = labels;
+  detailChart.data.datasets = datasets;
+  detailChart.update();
 
-  const ctx = document.getElementById("chart1").getContext("2d");
-  chart = new Chart(ctx, {
-    type: "line",
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { display: true },
-      },
-      scales: {
-        y: {
-          beginAtZero: false
-        }
-      }
-    }
-  });
-
-  renderKIHinweise(kpi);
+  updateHints(selectedKPI);
 }
 
-function renderKIHinweise(kpi) {
-  const hinweisContainer = document.getElementById("ki-hinweise");
-  hinweisContainer.innerHTML = "";
+function updateHints(kpiKey) {
+  const container = document.getElementById("aiHints");
+  container.innerHTML = "";
 
-  const hide = document.querySelector("input[type='checkbox'][onchange*='toggleHinweise']").checked;
-  if (hide) return;
+  if (document.getElementById("hideHints").checked) return;
 
-  kiHinweise[kpi].forEach(text => {
-    const bubble = document.createElement("div");
-    bubble.className = "ki-bubble";
-    bubble.innerHTML = `<span class="ai-icon">🤖</span> ${text}`;
-    hinweisContainer.appendChild(bubble);
+  kpiData[kpiKey].hints.forEach((hint) => {
+    const hintEl = document.createElement("div");
+    hintEl.className = "hint-bubble";
+    hintEl.innerHTML = `<span class="ai-icon">🤖</span> ${hint}`;
+    container.appendChild(hintEl);
   });
 }
 
-function toggleHinweise(checkbox) {
-  if (checkbox.checked) {
-    document.getElementById("ki-hinweise").innerHTML = "";
-  } else {
-    updateDetailChart();
-  }
+function toggleHints() {
+  const kpiKey = document.getElementById("kpiSelect").value;
+  updateHints(kpiKey);
 }
 
-// ================= Init ==================
-document.addEventListener("DOMContentLoaded", () => {
+// Init auf Seite laden
+window.onload = () => {
   updateDetailChart();
-});
+};

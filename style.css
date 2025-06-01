@@ -1,4 +1,4 @@
-/* === GRUNDLAYOUT === */
+/* ======== GRUNDSTRUKTUR ======== */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -13,6 +13,7 @@ main {
   flex: 1;
 }
 
+/* ======== HEADER ======== */
 header {
   background-color: #e6ddf4;
   padding: 1rem 2rem;
@@ -26,7 +27,7 @@ header {
 .menu-toggle {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   cursor: pointer;
   color: #3d1562;
 }
@@ -35,7 +36,7 @@ header {
   font-size: 1.8rem;
   font-weight: bold;
   text-align: center;
-  flex: 1;
+  flex-grow: 1;
   color: #3d1562;
 }
 
@@ -48,10 +49,11 @@ header {
 .top-right-icons svg {
   width: 24px;
   height: 24px;
-  fill: #3d1562;
   cursor: pointer;
+  fill: #3d1562;
 }
 
+/* ======== MENÜ ======== */
 .menu {
   position: absolute;
   top: 60px;
@@ -67,7 +69,7 @@ header {
   display: none;
 }
 
-/* === SIDEBAR === */
+/* ======== SIDEBAR ======== */
 .sidebar {
   width: 220px;
   background-color: #f4f1fa;
@@ -90,18 +92,34 @@ header {
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
-  font-weight: 500;
   color: #3d1562;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .sidebar li svg {
   margin-right: 0.5rem;
-  width: 16px;
-  height: 16px;
   fill: #3d1562;
+  width: 18px;
+  height: 18px;
 }
 
-/* === MAIN UPLOAD + DETAIL === */
+/* ======== FOOTER ======== */
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  background-color: #e6ddf4;
+  margin-top: auto;
+}
+
+footer a {
+  margin: 0 10px;
+  color: #3d1562;
+  text-decoration: none;
+}
+
+/* ======== UPLOAD-BEREICH ======== */
 .main-content {
   max-width: 1000px;
   margin: 2rem auto;
@@ -111,7 +129,6 @@ header {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* === UPLOAD AREA === */
 .upload-area {
   border: 2px dashed #c4b3e0;
   background-color: #f4f1fa;
@@ -155,154 +172,136 @@ header {
   fill: #c62828;
 }
 
-.analyze-button {
+.analyze-button,
+.filter-button {
   background-color: #3d1562;
   color: #f4f1fa;
-  padding: 0.4rem 0.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
   border: none;
-  border-radius: 5px;
-  font-size: 0.85rem;
+  border-radius: 6px;
   cursor: pointer;
-  margin-left: auto;
+  margin-top: 1rem;
 }
 
-.analyze-button:hover {
+.analyze-button:hover,
+.filter-button:hover {
   background-color: #4d1b7c;
 }
 
-/* === CHART & FILTER === */
-.filters {
-  padding: 1rem;
+/* ======== FILTER UND AUSWERTUNG ======== */
+.filter-controls {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
-  align-items: center;
-}
-
-select {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: 1px solid #c4b3e0;
-}
-
-.chart-container {
-  width: 95%;
-  max-width: 900px;
-  height: 400px;
-  background: white;
-  margin: 0 auto;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-/* === KI-HINWEISE === */
-.ai-hints {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-}
-
-.hint {
-  background-color: #3d1562;
-  color: white;
-  padding: 1rem 1.25rem;
-  border-radius: 25px;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.hint img {
-  width: 20px;
-  height: 20px;
-}
-
-.hint:last-child {
   margin-bottom: 2rem;
 }
 
-/* === FOOTER === */
-footer {
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.85rem;
-  background-color: #e6ddf4;
-  margin-top: auto;
-}
-
-footer a {
-  margin: 0 10px;
+.filter-controls label {
+  font-weight: 500;
   color: #3d1562;
-  text-decoration: none;
 }
 
-/* === RESPONSIVE === */
-@media (min-width: 1400px) {
-  .main-content,
-  .chart-container,
-  .ai-hints {
-    width: 80%;
-  }
+.filter-controls select,
+.filter-controls input[type="month"] {
+  padding: 0.4rem;
+  border: 1px solid #c4b3e0;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #3d1562;
 }
 
-/* === LOGIN === */
-.login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 90vh;
+#chartTitle {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 1.5rem 0;
 }
 
-.title {
-  font-size: 2.5rem;
+/* ======== CHART ======== */
+.chart-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 400px;
+  margin: auto;
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+/* ======== KI-HINWEISE ======== */
+#aiHints {
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+.speech-bubble {
+  position: relative;
+  background: #e6ddf4;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
   margin-bottom: 1rem;
+  color: #3d1562;
+}
+
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -15px;
+  left: 20px;
+  border-width: 15px 15px 0;
+  border-style: solid;
+  border-color: #e6ddf4 transparent transparent transparent;
+}
+
+.ai-icon {
+  margin-right: 0.5rem;
   font-weight: bold;
 }
 
-.login-box {
-  background-color: #e6ddf4;
+/* ======== LOGIN-SEITE ======== */
+.login-container {
+  max-width: 400px;
+  margin: 5rem auto;
   padding: 2rem;
+  background: white;
   border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 300px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.login-box input {
+.login-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #3d1562;
+}
+
+.login-container input,
+.login-container button {
+  display: block;
   width: 100%;
+  margin-bottom: 1rem;
   padding: 0.75rem;
-  margin: 0.5rem 0;
+  border-radius: 5px;
   border: 1px solid #c4b3e0;
-  border-radius: 5px;
-  font-size: 1rem;
 }
 
-.login-box button {
+.login-container button {
   background-color: #3d1562;
-  color: white;
-  padding: 0.75rem;
-  width: 100%;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  margin-top: 1rem;
+  color: #f4f1fa;
+  font-weight: bold;
   cursor: pointer;
 }
 
-.login-box button:hover {
+.login-container button:hover {
   background-color: #4d1b7c;
 }
 
-.forgot-password {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #3d1562;
-  text-decoration: none;
+/* ======== RESPONSIVE ======== */
+@media (min-width: 1400px) {
+  .main-content,
+  .chart-container {
+    width: 80%;
+  }
 }

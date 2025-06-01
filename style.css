@@ -1,4 +1,7 @@
-/* ===== Allgemeine Grundstruktur ===== */
+# Da die CSS-Datei sehr lang werden kann, wird sie als Textdatei vorbereitet und zur Verfügung gestellt.
+
+css_code = """
+/* === GRUNDLAYOUT === */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -13,7 +16,6 @@ main {
   flex: 1;
 }
 
-/* ===== HEADER / TOP-LEISTE ===== */
 header {
   background-color: #e6ddf4;
   padding: 1rem 2rem;
@@ -68,7 +70,7 @@ header {
   display: none;
 }
 
-/* ===== Sidebar ===== */
+/* === SIDEBAR === */
 .sidebar {
   width: 220px;
   background-color: #f4f1fa;
@@ -95,22 +97,76 @@ header {
   font-weight: 500;
 }
 
-.sidebar li svg {
+.sidebar li svg, .sidebar li .icon {
   margin-right: 0.5rem;
   fill: #3d1562;
   width: 16px;
   height: 16px;
 }
-/* ===== Upload-Bereich ===== */
-.main-content {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
+
+/* === CHART + FILTER === */
+.chart-card {
   background: white;
   border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 2rem auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
+.filters {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.filters label {
+  margin-right: 0.5rem;
+}
+
+.chart-container {
+  width: 95%;
+  margin: 0 auto;
+  padding: 1rem;
+  height: 400px;
+}
+
+/* === KI-SPRECHBLASEN === */
+.ki-analysis {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  text-align: left;
+}
+
+.ai-bubble {
+  background-color: #3d1562;
+  color: #f4f1fa;
+  padding: 1rem 1.5rem;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+  position: relative;
+  padding-left: 3rem;
+}
+
+.ai-icon {
+  width: 24px;
+  height: 24px;
+  background-color: #f4f1fa;
+  border-radius: 50%;
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+}
+
+.ki-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* === UPLOAD === */
 .upload-area {
   border: 2px dashed #c4b3e0;
   background-color: #f4f1fa;
@@ -125,121 +181,22 @@ header {
   background-color: #e6ddf4;
 }
 
-.upload-icon {
-  width: 40px;
-  height: 40px;
-  fill: #3d1562;
-  margin-bottom: 1rem;
-}
-
-.upload-info {
-  margin-top: 1.5rem;
-  list-style: none;
-  padding: 0;
-}
-
-.upload-info li {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #ddd;
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
-  fill: #3d1562;
-}
-
-.status-icon.valid {
-  fill: #6a1b9a;
-}
-
-.status-icon.error {
-  fill: #c62828;
-}
-
-.analyze-button {
-  background-color: #3d1562;
-  color: #f4f1fa;
-  padding: 0.4rem 0.75rem;
-  border: none;
-  border-radius: 5px;
+/* === FOOTER === */
+footer {
+  text-align: center;
+  padding: 1rem;
   font-size: 0.85rem;
-  cursor: pointer;
-  margin-left: auto;
+  background-color: #e6ddf4;
+  margin-top: auto;
 }
 
-.analyze-button:hover {
-  background-color: #4d1b7c;
-}
-
-/* ===== FILTER & CHART ===== */
-.filters {
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.filters label {
-  font-weight: 500;
+footer a {
+  margin: 0 10px;
   color: #3d1562;
+  text-decoration: none;
 }
 
-.filters select {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: 1px solid #c4b3e0;
-}
-
-.chart-container {
-  width: 95%;
-  max-width: 1000px;
-  margin: 1rem auto;
-  padding: 1rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  height: 400px;
-}
-
-/* ===== KI-Sprechblasen ===== */
-.ai-hints {
-  margin: 2rem auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 800px;
-}
-
-.ai-bubble {
-  background-color: #3d1562;
-  color: #f4f1fa;
-  border-radius: 20px;
-  padding: 1rem 1.5rem;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.ai-bubble svg {
-  width: 24px;
-  height: 24px;
-  fill: #f4f1fa;
-}
-
-#ki-toggle {
-  margin-top: 1rem;
-  color: #3d1562;
-  font-size: 0.9rem;
-}
-
-/* ===== Login Seite ===== */
+/* === LOGIN === */
 .login-container {
   display: flex;
   flex-direction: column;
@@ -296,26 +253,11 @@ header {
   color: #3d1562;
   text-decoration: none;
 }
+"""
 
-/* ===== FOOTER ===== */
-footer {
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.85rem;
-  background-color: #e6ddf4;
-  margin-top: auto;
-}
+# Speichern in einer Datei
+css_path = "/mnt/data/style.css"
+with open(css_path, "w") as f:
+    f.write(css_code)
 
-footer a {
-  margin: 0 10px;
-  color: #3d1562;
-  text-decoration: none;
-}
-
-/* Responsive Chart/Content */
-@media (min-width: 1400px) {
-  .chart-container,
-  .main-content {
-    width: 80%;
-  }
-}
+css_path

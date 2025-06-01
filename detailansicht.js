@@ -1,111 +1,152 @@
-const ctx = document.getElementById("detailChart").getContext("2d");
-
-let detailChart = new Chart(ctx, {
-  type: "line",
-  data: {
-    labels: ["Jan", "Feb", "Mär", "Apr", "Mai"],
-    datasets: [],
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-    },
-  },
-});
-
-const kpiData = {
+// Beispiel-Datenstruktur für jeden KPI und Monat
+const mockData = {
   umsatz: {
-    labels: ["Jan", "Feb", "Mär", "Apr", "Mai"],
-    values: [10000, 12000, 11000, 13000, 12500],
-    benchmark: [9500, 11500, 10800, 12500, 12300],
-    hints: [
-      "🧠 Die Nutzerzahlen haben sich im Vergleich zum letzten Monat um 18 % erhöht.",
-      "🧠 Der Umsatz überstieg im April den Durchschnitt um 12 %.",
-    ],
+    "2024-01": 10000,
+    "2024-02": 12000,
+    "2024-03": 11000,
+    "2024-04": 13000,
+    "2024-05": 12500,
+    "2024-06": 14000
   },
   besucher: {
-    labels: ["Jan", "Feb", "Mär", "Apr", "Mai"],
-    values: [5000, 6500, 6200, 7000, 6800],
-    benchmark: [4800, 6300, 6000, 6800, 6700],
-    hints: [
-      "🧠 Im März kamen besonders viele Besucher über mobile Geräte.",
-      "🧠 Die Besucherzahlen steigen kontinuierlich seit Jahresbeginn.",
-    ],
+    "2024-01": 800,
+    "2024-02": 950,
+    "2024-03": 1000,
+    "2024-04": 1200,
+    "2024-05": 1150,
+    "2024-06": 1300
   },
   conversion: {
-    labels: ["Jan", "Feb", "Mär", "Apr", "Mai"],
-    values: [2.5, 2.8, 2.9, 3.0, 2.95],
-    benchmark: [2.4, 2.6, 2.7, 2.9, 2.8],
-    hints: [
-      "🧠 Die Conversion Rate ist bei Mobilgeräten höher als bei Desktop-Besuchern.",
-      "🧠 Höchste Conversion im April erreicht.",
-    ],
-  },
+    "2024-01": 1.8,
+    "2024-02": 2.0,
+    "2024-03": 2.5,
+    "2024-04": 2.9,
+    "2024-05": 2.6,
+    "2024-06": 3.0
+  }
 };
 
+// KI-Hinweise passend zum KPI
+const aiHints = {
+  umsatz: [
+    "📈 Umsatzsteigerung durch gezielte Rabattaktionen möglich.",
+    "💰 Achte auf saisonale Schwankungen im Umsatzverlauf."
+  ],
+  besucher: [
+    "🚶‍♂️ Besucherzahlen steigen bei Online-Marketing-Kampagnen.",
+    "🌍 Mobile Besucher machen über 60 % aus – Seite mobil optimieren!"
+  ],
+  conversion: [
+    "🎯 Conversion Rate sinkt an Wochenenden – Teste andere Call-to-Actions.",
+    "⚠️ Lange Ladezeiten beeinflussen Conversion negativ."
+  ]
+};
+
+let chart;
+
 function updateDetailChart() {
-  const selectedKPI = document.getElementById("kpiSelect").value;
-  const showBenchmark = document.getElementById("benchmarkToggle").checked;
+  const kpi = document.getElementById("kpiSelect").value;
   const start = document.getElementById("startDate").value;
   const end = document.getElementById("endDate").value;
+  const showBenchmark = document.getElementById("benchmarkToggle").checked;
 
-  const data = kpiData[selectedKPI];
+  const filteredData = getFilteredData(mockData[kpi], start, end);
+  const labels = Object.keys(filteredData);
+  const values = Object.values(filteredData);
 
-  // Zeitraum-Filterung (vereinfachtes Beispiel – alle Monate werden angezeigt)
-  const labels = data.labels;
-  const values = data.values;
-  const benchmark = data.benchmark;
+  const benchmark = values.map(v => (kpi === "conversion" ? 2.5 : v * 0.9));
 
-  let datasets = [
-    {
-      label: selectedKPI.charAt(0).toUpperCase() + selectedKPI.slice(1),
-      data: values,
-      borderColor: "#3d1562",
-      backgroundColor: "#3d1562",
-      tension: 0.4,
+  // Chart aktualisieren oder neu erzeugen
+  if (chart) chart.destroy();
+  chart = new Chart(document.getElementById("detailChart"), {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: kpi.charAt(0).toUpperCase() + kpi.slice(1),
+          data: values,
+          borderWidth: 2
+        },
+        ...(showBenchmark
+          ? [{
+              label: "Benchmark",
+              data: benchmark,
+              borderDash: [5, 5],
+              borderWidth: 1
+            }]
+          : [])
+      ]
     },
-  ];
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
 
-  if (showBenchmark) {
-    datasets.push({
-      label: "Benchmark",
-      data: benchmark,
-      borderColor: "#c4b3e0",
-      borderDash: [5, 5],
-      tension: 0.4,
-    });
-  }
-
-  detailChart.data.labels = labels;
-  detailChart.data.datasets = datasets;
-  detailChart.update();
-
-  updateHints(selectedKPI);
+  updateChartTitle(kpi, start, end);
+  updateAIHints(kpi);
 }
 
-function updateHints(kpiKey) {
+// Filtere Monatsdaten nach Zeitraum
+function getFilteredData(data, start, end) {
+  const result = {};
+  const startDate = new Date(start + "-01");
+  const endDate = new Date(end + "-01");
+
+  for (const [month, value] of Object.entries(data)) {
+    const currentDate = new Date(month + "-01");
+    if (currentDate >= startDate && currentDate <= endDate) {
+      result[month] = value;
+    }
+  }
+  return result;
+}
+
+// Charttitel aktualisieren
+function updateChartTitle(kpi, start, end) {
+  const monthNames = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+  const startParts = start.split("-");
+  const endParts = end.split("-");
+  const title = `${kpi.charAt(0).toUpperCase() + kpi.slice(1)} – ${monthNames[+startParts[1] - 1]} bis ${monthNames[+endParts[1] - 1]} ${startParts[0]}`;
+  document.getElementById("chartTitle").textContent = title;
+}
+
+// KI-Hinweise anzeigen
+function updateAIHints(kpi) {
   const container = document.getElementById("aiHints");
   container.innerHTML = "";
-
   if (document.getElementById("hideHints").checked) return;
 
-  kpiData[kpiKey].hints.forEach((hint) => {
-    const hintEl = document.createElement("div");
-    hintEl.className = "hint-bubble";
-    hintEl.innerHTML = `<span class="ai-icon">🤖</span> ${hint}`;
-    container.appendChild(hintEl);
+  aiHints[kpi].forEach(hint => {
+    const div = document.createElement("div");
+    div.classList.add("speech-bubble");
+    div.innerHTML = `<span class="ai-icon">🤖</span> ${hint}`;
+    container.appendChild(div);
   });
 }
 
+// KI-Hinweise ein-/ausblenden
 function toggleHints() {
-  const kpiKey = document.getElementById("kpiSelect").value;
-  updateHints(kpiKey);
+  updateAIHints(document.getElementById("kpiSelect").value);
 }
 
-// Init auf Seite laden
-window.onload = () => {
+// Menü- und User-Funktionen
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("hidden");
+}
+
+function toggleSettingsMenu() {
+  document.getElementById("settings-menu").classList.toggle("hidden");
+  document.getElementById("user-menu").classList.add("hidden");
+}
+
+function toggleUserMenu() {
+  document.getElementById("user-menu").classList.toggle("hidden");
+  document.getElementById("settings-menu").classList.add("hidden");
+}
+
+// Beim Laden initialisieren
+window.addEventListener("DOMContentLoaded", () => {
   updateDetailChart();
-};
+});

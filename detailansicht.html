@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Detailansicht – KPIlytics</title>
+  <title>KPIlytics – Detailansicht</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -12,8 +12,15 @@
     <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
     <div class="logo">KPIlytics</div>
     <div class="top-right-icons">
-      <svg onclick="toggleSettings()"><use href="#settings-icon"/></svg>
-      <svg onclick="toggleUserMenu()"><use href="#user-icon"/></svg>
+      <!-- Settings -->
+      <svg onclick="toggleSettingsMenu()" class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M9.6 0L9 2H7L6.4 0H4L4.6 2.2A6.98 6.98 0 003 5L0.6 5.6V8.4L3 9A6.98 6.98 0 004.6 13.8L4 16H6.4L7 14H9L9.6 16H12L11.4 13.8A6.98 6.98 0 0013 9l2.4-.6V5.6L13 5a6.98 6.98 0 00-1.6-2.8L12 0H9.6z"/>
+      </svg>
+
+      <!-- User -->
+      <svg onclick="toggleUserMenu()" class="user-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 9a5 5 0 100-10 5 5 0 000 10zm0 1c-3 0-9 1.5-9 4.5V16h18v-1.5C17 11.5 11 10 8 10z"/>
+      </svg>
     </div>
 
     <div id="settings-menu" class="menu hidden">
@@ -27,52 +34,41 @@
 
     <div id="sidebar" class="sidebar hidden">
       <ul>
-        <li><span class="icon">📁</span><a href="upload.html">Datei Upload</a></li>
+        <li><span class="icon">📤</span><a href="upload.html">Datei Upload</a></li>
         <li><span class="icon">📊</span><a href="detailansicht.html">Detailansicht</a></li>
-        <li><span class="icon">💬</span><a href="#">Feedback</a></li>
+        <li><span class="icon">💬</span><a href="feedback.html">Feedback</a></li>
       </ul>
     </div>
   </header>
 
   <main class="main-content">
-    <!-- Filterbereich -->
     <div class="filters">
-      <label>Bereich:
-        <select id="bereichSelect">
-          <option value="Rezeption">Rezeption</option>
-          <option value="Vertrieb">Vertrieb</option>
-        </select>
-      </label>
-      <label>KPI:
-        <select id="kpiSelect">
-          <option value="Umsatz">Umsatz</option>
-          <option value="Besucher">Besucher</option>
-          <option value="Conversion Rate">Conversion Rate</option>
-        </select>
-      </label>
-      <label>Von:
-        <input type="month" id="von" value="2024-01">
-      </label>
-      <label>Bis:
-        <input type="month" id="bis" value="2024-05">
-      </label>
-      <label>
-        <input type="checkbox" id="benchmarkToggle"> Benchmark anzeigen
-      </label>
-      <button class="filter-button" onclick="applyFilter()">Filter anwenden</button>
+      <label for="kpiSelect">KPI:</label>
+      <select id="kpiSelect">
+        <option value="umsatz">Umsatz</option>
+        <option value="besucher">Besucher</option>
+        <option value="conversion">Conversion Rate</option>
+      </select>
+
+      <label for="startDate">Start:</label>
+      <input type="month" id="startDate" value="2024-01" />
+
+      <label for="endDate">Ende:</label>
+      <input type="month" id="endDate" value="2024-05" />
+
+      <label><input type="checkbox" id="benchmarkToggle" /> Benchmark anzeigen</label>
+      <button onclick="updateDetailChart()" class="filter-button">Filter anwenden</button>
     </div>
 
-    <!-- Diagrammtitel -->
-    <div class="chart-title" id="chartTitle">Umsatz – Jan 2024 bis Mai 2024</div>
-
-    <!-- Diagramm -->
+    <h2 id="chartTitle">Umsatz – Jan bis Mai 2024</h2>
     <div class="chart-container">
-      <canvas id="chart1"></canvas>
+      <canvas id="detailChart"></canvas>
     </div>
 
-    <!-- KI-Hinweise -->
-    <div class="ki-analysis" id="kiHints">
-      <!-- Dynamisch per JS -->
+    <div class="ai-section">
+      <h3>KI-basierte Analyse</h3>
+      <div id="aiHints" class="ai-hints"></div>
+      <label><input type="checkbox" id="hideHints" onchange="toggleHints()" /> KI-Hinweise ausblenden</label>
     </div>
   </main>
 
@@ -81,16 +77,6 @@
     <a href="#">AGB</a>
     <a href="#">Kontakt</a>
   </footer>
-
-  <!-- Dummy SVGs für Icons -->
-  <svg style="display: none;">
-    <symbol id="settings-icon" viewBox="0 0 16 16">
-      <path d="M9.6 0l-.4 1.6H6.8L6.4 0H4v2.4h1.2l-.4 1.6H4v2.4h1.2l-.4 1.6H4v2.4h1.2l-.4 1.6H4V16h2.4l.4-1.6h2.4l.4 1.6H12v-2.4h-1.2l.4-1.6H12v-2.4h-1.2l.4-1.6H12V6.4h-1.2l.4-1.6H12V2.4h-2.4l-.4 1.6H6.8L6.4 2.4H4V0h2.4l.4 1.6h2.4L9.6 0z"/>
-    </symbol>
-    <symbol id="user-icon" viewBox="0 0 16 16">
-      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4 1H4a4 4 0 0 0-4 4v1h16v-1a4 4 0 0 0-4-4z"/>
-    </symbol>
-  </svg>
 
   <script src="detailansicht.js"></script>
 </body>

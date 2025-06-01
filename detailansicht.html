@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KPIlytics – Auswertung</title>
+  <title>KPIlytics – Detailansicht</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -12,22 +12,22 @@
     <div class="logo">KPIlytics</div>
     <div class="top-right-icons">
       <!-- Settings Icon -->
-      <svg onclick="toggleSettings()" class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-        <path d="M9.405 1.05a1 1 0 0 0-2.81 0L5.017 2.44a1 1 0 0 1-.753.386l-1.87.158a1 1 0 0 0-.826.582L.157 5.735a1 1 0 0 0 .174 1.086l1.322 1.3a1 1 0 0 1 .242.939l-.5 1.853a1 1 0 0 0 .517 1.155l1.653.783a1 1 0 0 1 .54.528l.729 1.725a1 1 0 0 0 1.287.537l1.813-.735a1 1 0 0 1 .848 0l1.813.735a1 1 0 0 0 1.287-.537l.729-1.725a1 1 0 0 1 .54-.528l1.653-.783a1 1 0 0 0 .517-1.155l-.5-1.853a1 1 0 0 1 .242-.939l1.322-1.3a1 1 0 0 0 .174-1.086l-1.411-2.17a1 1 0 0 0-.826-.582l-1.87-.158a1 1 0 0 1-.753-.386L9.405 1.05zM8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+      <svg onclick="toggleSettingsMenu()" class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+        <path d="M9.5 1a1.5 1.5 0 00-3 0h-2a.5.5 0 000 1H6.5v1.02a5.5 5.5 0 00-2.8 1.63l-.72-.72a.5.5 0 10-.71.71l.72.72a5.5 5.5 0 00-1.63 2.8H1.5a.5.5 0 000 1h1.02a5.5 5.5 0 001.63 2.8l-.72.72a.5.5 0 10.71.71l.72-.72a5.5 5.5 0 002.8 1.63V14.5a.5.5 0 001 0V13.48a5.5 5.5 0 002.8-1.63l.72.72a.5.5 0 10.71-.71l-.72-.72a5.5 5.5 0 001.63-2.8H14.5a.5.5 0 000-1h-1.02a5.5 5.5 0 00-1.63-2.8l.72-.72a.5.5 0 00-.71-.71l-.72.72a5.5 5.5 0 00-2.8-1.63V2.5a.5.5 0 00-1 0V3.48a5.5 5.5 0 00-2.8 1.63V2H9.5a.5.5 0 000-1h-2z"/>
       </svg>
-
       <!-- User Icon -->
       <svg onclick="toggleUserMenu()" class="user-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm4 1H4a4 4 0 0 0-4 4v1h16v-1a4 4 0 0 0-4-4z"/>
+        <path d="M8 8a3 3 0 100-6 3 3 0 000 6zm4 1H4a4 4 0 00-4 4v1a1 1 0 001 1h14a1 1 0 001-1v-1a4 4 0 00-4-4z"/>
       </svg>
     </div>
 
-    <!-- Dropdown-Menüs -->
+    <!-- Settings Dropdown -->
     <div id="settings-menu" class="menu hidden">
-      <div><strong>⚙ Einstellungen</strong></div>
-      <div><a href="#">Benutzer verwalten</a></div>
+      <div><strong>Einstellungen</strong></div>
+      <a href="#">Benutzer verwalten</a>
     </div>
 
+    <!-- User Dropdown -->
     <div id="user-menu" class="menu hidden">
       <label><input type="checkbox" id="logout-switch" /> Ausloggen</label>
     </div>
@@ -35,54 +35,55 @@
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar hidden">
       <ul>
-        <li><span class="icon">📁</span> <a href="upload.html">Datei Upload</a></li>
-        <li><span class="icon">📊</span> <a href="detailansicht.html">Analyse</a></li>
-        <li><span class="icon">💬</span> <a href="#">Feedback</a></li>
+        <li><span class="icon">📁</span><a href="upload.html">Datei Upload</a></li>
+        <li><span class="icon">📊</span><a href="detailansicht.html">Detailansicht</a></li>
+        <li><span class="icon">💬</span><a href="feedback.html">Feedback</a></li>
       </ul>
     </div>
   </header>
 
   <main class="main-content">
-    <!-- Filter & Chart -->
-    <div class="filters">
-      <label>Filter:
-        <select id="kpiFilter" onchange="updateChart()">
+    <div class="chart-card">
+      <!-- Filter -->
+      <div class="filters">
+        <label for="filter">Filter:</label>
+        <select id="filter" onchange="updateDetailChart()">
           <option value="conversion">Conversion Rate</option>
-          <option value="adr">ADR</option>
-          <option value="revenue">Revenue</option>
+          <option value="besucher">Besucher</option>
+          <option value="umsatz">Umsatz</option>
         </select>
-      </label>
-    </div>
+      </div>
 
-    <div class="chart-container">
-      <canvas id="detailChart"></canvas>
+      <!-- Chart -->
+      <div class="chart-container">
+        <canvas id="detailChart"></canvas>
+      </div>
     </div>
 
     <!-- KI-Hinweise -->
-    <section id="ki-analysen">
-      <h3>KI-basierte Analyse</h3>
-      <div class="ki-hint">
-        <svg class="ki-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path fill="#3d1562" d="M12 2a10 10 0 1 0 0.001 20.001A10 10 0 0 0 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-        </svg>
-        <p>Die Nutzerzahlen haben sich im Vergleich zum letzten Monat um 18 % erhöht.</p>
+    <section class="ki-analysis">
+      <div class="ai-bubble">
+        <div class="ai-icon"></div>
+        Die Nutzerzahlen haben sich im Vergleich zum letzten Monat um 18 % erhöht.
       </div>
-      <div class="ki-hint">
-        <svg class="ki-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path fill="#3d1562" d="M12 2a10 10 0 1 0 0.001 20.001A10 10 0 0 0 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-        </svg>
-        <p>Die Conversion Rate ist bei Mobilgeräten höher als bei Desktop-Besuchern.</p>
+      <div class="ai-bubble">
+        <div class="ai-icon"></div>
+        Die Conversion Rate ist bei Mobilgeräten höher als bei Desktop-Besuchern.
       </div>
 
-      <label><input type="checkbox" onchange="toggleKIHinweise(this)"> KI-Hinweise ausblenden</label>
+      <label class="ki-toggle">
+        <input type="checkbox" id="hide-hints" onchange="toggleKiHinweise()" />
+        KI-Hinweise ausblenden
+      </label>
     </section>
   </main>
 
   <footer>
-    <a href="#">Impressum</a> | <a href="#">AGB</a> | <a href="#">Kontakt</a>
+    <a href="#">Impressum</a>
+    <a href="#">AGB</a>
+    <a href="#">Kontakt</a>
   </footer>
 
   <script src="script.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

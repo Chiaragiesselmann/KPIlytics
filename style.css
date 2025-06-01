@@ -1,7 +1,4 @@
-from pathlib import Path
 
-# CSS-Grundstruktur auf Basis der aktuellen Nutzeranforderung erstellen
-css_code = """
 /* ===== Allgemeine Grundstruktur ===== */
 body {
   margin: 0;
@@ -260,9 +257,3 @@ footer a {
     width: 80%;
   }
 }
-"""
-
-# Speichere die CSS-Datei für Anzeige
-path = Path("/mnt/data/style_recovered.css")
-path.write_text(css_code)
-path.name

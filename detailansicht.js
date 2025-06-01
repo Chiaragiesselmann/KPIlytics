@@ -1,107 +1,4 @@
-// Chart Setup
-let chart;
-
-document.addEventListener("DOMContentLoaded", function () {
-  initChart();
-  toggleHints(); // initialer Zustand
-});
-
-// Beispiel-Daten
-const kpiData = {
-  conversion: {
-    label: "Conversion Rate",
-    data: [2.4, 2.9, 3.1, 2.7, 3.5],
-    benchmark: [2.2, 2.5, 2.8, 2.6, 2.9]
-  },
-  besucher: {
-    label: "Besucher",
-    data: [1200, 1350, 1250, 1600, 1550],
-    benchmark: [1100, 1300, 1200, 1500, 1500]
-  },
-  umsatz: {
-    label: "Umsatz (€)",
-    data: [10000, 12500, 11500, 14000, 13500],
-    benchmark: [9500, 12000, 11000, 13500, 13200]
-  }
-};
-
-function initChart() {
-  const ctx = document.getElementById("chart1").getContext("2d");
-  const selectedKPI = document.getElementById("kpi-filter").value;
-  const showBenchmark = document.getElementById("benchmark-toggle").checked;
-
-  const dataset = getDatasets(selectedKPI, showBenchmark);
-
-  chart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: ["Jan", "Feb", "Mär", "Apr", "Mai"],
-      datasets: dataset
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: "top"
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: false
-        }
-      }
-    }
-  });
-}
-
-function updateDetailChart() {
-  const selectedKPI = document.getElementById("kpi-filter").value;
-  const showBenchmark = document.getElementById("benchmark-toggle").checked;
-
-  const newDatasets = getDatasets(selectedKPI, showBenchmark);
-
-  chart.data.datasets = newDatasets;
-  chart.update();
-}
-
-function getDatasets(kpiKey, showBenchmark) {
-  const current = kpiData[kpiKey];
-  const datasets = [
-    {
-      label: current.label,
-      data: current.data,
-      fill: false,
-      borderColor: "#3d1562",
-      tension: 0.3
-    }
-  ];
-
-  if (showBenchmark) {
-    datasets.push({
-      label: "Benchmark",
-      data: current.benchmark,
-      fill: false,
-      borderColor: "#c4b3e0",
-      borderDash: [5, 5],
-      tension: 0.3
-    });
-  }
-
-  return datasets;
-}
-
-// KI-Hinweise ein-/ausblenden
-function toggleHints() {
-  const checkbox = document.getElementById("toggle-hints");
-  const hintSection = document.getElementById("ai-hints-section");
-
-  const bubbles = hintSection.querySelectorAll(".hint-bubble");
-  bubbles.forEach(bubble => {
-    bubble.style.display = checkbox.checked ? "none" : "block";
-  });
-}
-
-// Menüfunktionen
+// ================= Menü & Sidebar ==================
 function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("hidden");
 }
@@ -113,3 +10,119 @@ function toggleSettings() {
 function toggleUserMenu() {
   document.getElementById("user-menu").classList.toggle("hidden");
 }
+
+// ================= Chart Daten ==================
+const daten = {
+  umsatz: {
+    label: "Umsatz (€)",
+    daten: [10000, 11500, 11000, 13000, 12500],
+    benchmark: [9500, 10800, 10500, 11800, 12000]
+  },
+  conversion: {
+    label: "Conversion Rate (%)",
+    daten: [3.2, 3.5, 3.4, 3.9, 4.1],
+    benchmark: [3.0, 3.3, 3.2, 3.5, 3.8]
+  },
+  besucher: {
+    label: "Besucher",
+    daten: [800, 950, 1000, 1200, 1100],
+    benchmark: [750, 900, 920, 1100, 1080]
+  }
+};
+
+const kiHinweise = {
+  umsatz: [
+    "📈 Die Umsätze haben sich im Vergleich zum letzten Monat um 18 % erhöht.",
+    "🛒 Die Region Süd zeigt einen signifikanten Anstieg im Produktverkauf."
+  ],
+  conversion: [
+    "🔄 Die Conversion Rate ist bei Mobilgeräten höher als bei Desktop-Besuchern.",
+    "💡 Nutzer mit Gutscheinen konvertieren doppelt so häufig."
+  ],
+  besucher: [
+    "👥 Die Besucherzahlen steigen an Wochenenden besonders stark.",
+    "📱 Mobile Zugriffe machen 65 % aller Besucher aus."
+  ]
+};
+
+let chart;
+
+function updateDetailChart() {
+  const kpi = document.getElementById("kpi-select").value;
+  const showBenchmark = document.getElementById("benchmark-toggle").checked;
+
+  const labels = ["Jan", "Feb", "Mär", "Apr", "Mai"];
+  const kpiDaten = daten[kpi];
+
+  const datasets = [
+    {
+      label: kpiDaten.label,
+      data: kpiDaten.daten,
+      borderColor: "#3d1562",
+      backgroundColor: "rgba(61, 21, 98, 0.1)",
+      fill: false,
+      tension: 0.4
+    }
+  ];
+
+  if (showBenchmark) {
+    datasets.push({
+      label: "Benchmark",
+      data: kpiDaten.benchmark,
+      borderColor: "#aaa",
+      backgroundColor: "rgba(160,160,160,0.1)",
+      borderDash: [5, 5],
+      fill: false,
+      tension: 0.4
+    });
+  }
+
+  if (chart) chart.destroy();
+
+  const ctx = document.getElementById("chart1").getContext("2d");
+  chart = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: true },
+      },
+      scales: {
+        y: {
+          beginAtZero: false
+        }
+      }
+    }
+  });
+
+  renderKIHinweise(kpi);
+}
+
+function renderKIHinweise(kpi) {
+  const hinweisContainer = document.getElementById("ki-hinweise");
+  hinweisContainer.innerHTML = "";
+
+  const hide = document.querySelector("input[type='checkbox'][onchange*='toggleHinweise']").checked;
+  if (hide) return;
+
+  kiHinweise[kpi].forEach(text => {
+    const bubble = document.createElement("div");
+    bubble.className = "ki-bubble";
+    bubble.innerHTML = `<span class="ai-icon">🤖</span> ${text}`;
+    hinweisContainer.appendChild(bubble);
+  });
+}
+
+function toggleHinweise(checkbox) {
+  if (checkbox.checked) {
+    document.getElementById("ki-hinweise").innerHTML = "";
+  } else {
+    updateDetailChart();
+  }
+}
+
+// ================= Init ==================
+document.addEventListener("DOMContentLoaded", () => {
+  updateDetailChart();
+});

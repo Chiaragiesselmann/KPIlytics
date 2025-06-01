@@ -1,67 +1,106 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Sidebar toggle
-  window.toggleSidebar = function () {
-    document.getElementById("sidebar").classList.toggle("active");
-  };
+  const ctx = document.getElementById("detailChart").getContext("2d");
+  let currentChart = null;
 
-  // Settings toggle
-  window.toggleSettings = function () {
-    const menu = document.getElementById("settings-menu");
-    menu.classList.toggle("hidden");
-  };
+  function createChart(label, data) {
+    if (currentChart) currentChart.destroy();
 
-  // KI-Toggle
-  const aiToggle = document.getElementById("disable-ai");
-  const bubbles = document.querySelectorAll(".speech-bubble");
-
-  aiToggle.addEventListener("change", function () {
-    bubbles.forEach(bubble => {
-      bubble.style.display = this.checked ? "none" : "flex";
-    });
-  });
-
-  // Chart Setup (ähnlich dem Dashboard)
-  const ctx = document.getElementById('detailChart').getContext('2d');
-  const detailChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni'],
-      datasets: [{
-        label: 'Umsatz (in €)',
-        data: [12000, 19000, 3000, 5000, 20000, 30000],
-        fill: true,
-        borderColor: '#6A1B9A',
-        backgroundColor: 'rgba(106, 27, 154, 0.2)',
-        tension: 0.4
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          labels: {
-            color: '#333'
-          }
-        }
+    currentChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: ["Januar", "Februar", "März", "April", "Mai", "Juni"],
+        datasets: [
+          {
+            label: label,
+            data: data,
+            borderColor: "#3d1562",
+            backgroundColor: "rgba(61, 21, 98, 0.2)",
+            fill: true,
+            tension: 0.3,
+            pointRadius: 4,
+            pointBackgroundColor: "#3d1562",
+          },
+        ],
       },
-      scales: {
-        x: {
-          ticks: {
-            color: '#555'
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: "#3d1562",
+            },
           },
-          grid: {
-            display: false
-          }
         },
-        y: {
-          ticks: {
-            color: '#555'
+        scales: {
+          x: {
+            ticks: {
+              color: "#3d1562",
+            },
           },
-          grid: {
-            color: '#eee'
-          }
-        }
-      }
+          y: {
+            ticks: {
+              color: "#3d1562",
+            },
+          },
+        },
+      },
+    });
+  }
+
+  function getDataSet(kpi) {
+    switch (kpi) {
+      case "umsatz":
+        return [12000, 15000, 13000, 17000, 21000, 28000];
+      case "buchungen":
+        return [80, 95, 70, 110, 150, 200];
+      case "conversion":
+        return [2.5, 2.8, 3.0, 3.3, 3.8, 4.1];
+      default:
+        return [];
     }
-  });
+  }
+
+  window.updateChart = function () {
+    const selectedKpi = document.getElementById("kpi-select").value;
+    const labelMap = {
+      umsatz: "Umsatz (in €)",
+      buchungen: "Buchungen",
+      conversion: "Conversion Rate (%)",
+    };
+    const data = getDataSet(selectedKpi);
+    createChart(labelMap[selectedKpi], data);
+  };
+
+  // Initiale Anzeige
+  updateChart();
+
+  // KI-Hinweise umschalten
+  window.toggleAiHints = function () {
+    const aiSection = document.getElementById("ai-hints");
+    aiSection.style.display = aiSection.style.display === "none" ? "block" : "none";
+  };
+
+  // Menüfunktionen
+  window.toggleSidebar = function () {
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar) sidebar.classList.toggle("hidden");
+  };
+
+  window.toggleSettings = function () {
+    document.getElementById("settings-menu").classList.toggle("hidden");
+  };
+
+  window.toggleUserMenu = function () {
+    document.getElementById("user-menu").classList.toggle("hidden");
+  };
+
+  // Logout-Switch
+  const logoutSwitch = document.getElementById("logout-switch");
+  if (logoutSwitch) {
+    logoutSwitch.addEventListener("change", function () {
+      if (this.checked) {
+        window.location.href = "index.html";
+      }
+    });
+  }
 });

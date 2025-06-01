@@ -1,6 +1,4 @@
-# Da die CSS-Datei sehr lang werden kann, wird sie als Textdatei vorbereitet und zur Verfügung gestellt.
 
-css_code = """
 /* === GRUNDLAYOUT === */
 body {
   margin: 0;
@@ -253,11 +251,4 @@ footer a {
   color: #3d1562;
   text-decoration: none;
 }
-"""
 
-# Speichern in einer Datei
-css_path = "/mnt/data/style.css"
-with open(css_path, "w") as f:
-    f.write(css_code)
-
-css_path

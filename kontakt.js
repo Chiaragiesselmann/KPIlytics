@@ -1,3 +1,5 @@
+
+
 // Kontaktformular – einfaches Demo-Verhalten
 function submitContactForm(event) {
   event.preventDefault(); // Verhindert Seitenreload beim Absenden

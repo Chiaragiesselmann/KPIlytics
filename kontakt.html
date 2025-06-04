@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontakt – KPIlytics</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="logo">KPIlytics</div>
+    <div class="top-right-icons">
+      <svg onclick="toggleSettings()" class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="..."/></svg>
+      <svg onclick="toggleUserMenu()" class="user-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="..."/></svg>
+    </div>
+    <div id="settings-menu" class="menu hidden">
+      <a href="#">Einstellungen</a><br />
+      <a href="#">Benutzer verwalten</a>
+    </div>
+    <div id="user-menu" class="menu hidden">
+      <label><input type="checkbox" id="logout-switch" /> Ausloggen</label>
+    </div>
+    <div id="sidebar" class="sidebar hidden">
+      <ul>
+        <li onclick="location.href='dashboard.html'">📊 Dashboard</li>
+        <li onclick="location.href='upload.html'">⬆️ Upload</li>
+        <li onclick="location.href='detailansicht.html'">📈 Detailansicht</li>
+        <li onclick="location.href='kontakt.html'">✉️ Kontakt</li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <h2>Kontakt</h2>
+    <p>Hast du Fragen, Feedback oder ein Anliegen? Kontaktiere uns gern!</p>
+
+    <form class="contact-form" onsubmit="submitContactForm(event)">
+      <label for="name">Name*</label>
+      <input type="text" id="name" required />
+
+      <label for="email">E-Mail*</label>
+      <input type="email" id="email" required />
+
+      <label for="message">Nachricht*</label>
+      <textarea id="message" rows="5" required></textarea>
+
+      <button type="submit" class="analyze-button">Absenden</button>
+    </form>
+  </main>
+
+  <footer>
+    <a href="#">Impressum</a>
+    <a href="#">AGB</a>
+    <a href="kontakt.html">Kontakt</a>
+  </footer>
+
+  <script src="kontakt.js" defer></script>
+</body>
+</html>
